@@ -115,7 +115,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Leave Request',
-                    'url'  => '/user',
+                    'url'  => '/leaverequests/create',
                     'icon' => 'folder-open',
                 ],
                 [
@@ -175,37 +175,19 @@ return [
                 ],
             ],
 
-                [
-                    'text' => 'Staff Addresses',
-                    'icon' => 'envelope',
-                    'submenu' => [
-                        [
-                            'text' => 'Staff Addresses List',
-                            'url'  => '/staffaddresses',
-                            'icon' => 'envelope',
-                        ],
-                        [
-                            'text' => 'Add Staff Address',
-                            'url'  => '/createstaffaddresses',
-                            'icon' => 'plus',
-                        ],
-
-                ],
-            ],
-
             [
                 'text' => 'Staff Leave Balance',
                 'icon' => 'file',
                 'submenu' => [
                     [
                         'text' => 'Staff Leave Balances',
-                        'url'  => '/staffleavebalance',
+                        'url'  => '#',
                         'icon' => 'th-list',
                     ],
                     [
-                        'text' => 'Add Staff Leave Balance',
-                        'url'  => '/createleavebalance',
-                        'icon' => 'plus',
+                        'text' => 'Leave Balance Bulk Update',
+                        'url'  => '#',
+                        'icon' => 'pencil',
                     ],
 
             ],

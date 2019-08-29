@@ -25,15 +25,19 @@
     <th>Department ID</th>
     <th>Depart mentName</th>
     <th>Department Description</th>
+    <th>Action</th>
     
   </tr>
   </thead>
   <tbody>
     @foreach($department as $departments)
       <tr>
-        <td><a href="/departments/{{$departments->id}}/edit">{{$departments->id}}</a></td>
-        <td><a href="/departments/{{$departments->id}}/edit">{{$departments->DepartmentName}}</a></td>
-        <td><a href="/departments/{{$departments->id}}/edit">{{$departments->DepartmentDescription}}</a></td>
+        <td>{{$departments->id}}</td>
+        <td>{{$departments->DepartmentName}}</td>
+        <td>{{$departments->DepartmentDescription}}</td>
+        <td>
+        <a class="pull-center btn btn-primary btn-sm" href="/departments/{{$departments->id}}/edit" role="button">Edit</a>
+        </td>
       </tr>
       @endforeach
   </tbody>

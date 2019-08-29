@@ -174,16 +174,16 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="EntitledLeaveDays" class="col-md-2 col-form-label text-md-right">Entitled Leave Days<span class="required"><font color="red">*</font></span></label>
+                            <label for="LeaveBalance" class="col-md-2 col-form-label text-md-right">LeaveBalance<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
-                                <input id="EntitledLeaveDays" 
+                                <input id="LeaveBalance" 
                                        type="text" 
-                                       class="form-control @error('EntitledLeaveDays') is-invalid @enderror" 
-                                       name="EntitledLeaveDays" 
-                                       value="{{ old('EntitledLeaveDays') }}" 
-                                       required autocomplete="EntitledLeaveDays" 
+                                       class="form-control @error('LeaveBalance') is-invalid @enderror" 
+                                       name="LeaveBalance" 
+                                       value="{{ old('LeaveBalance') }}" 
+                                       required autocomplete="LeaveBalance" 
                                        autofocus >
-                                @error('EntitledLeaveDays')
+                                @error('LeaveBalance')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -266,15 +266,15 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="PayrollDepartment" class="col-md-2 col-form-label text-md-right">Payroll Department<span class="required"><font color="red">*</font></span></label>
+                            <label for="Department" class="col-md-2 col-form-label text-md-right">Department<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
-                            <select id="PayrollDepartment" required name="PayrollDepartment" class="form-control @error('PayrollDepartment') is-invalid @enderror"/>
-                                  <option value="{{ old('PayrollDepartment') }}" disabled selected>{{ old('PayrollDepartment') }}</option>
+                            <select id="Department" required name="Department" class="form-control @error('Department') is-invalid @enderror"/>
+                                  <option value="{{ old('Department') }}" disabled selected>{{ old('Department') }}</option>
                                   @foreach($departments as $department)
-                                       <option value="{{$department->DepartmentName}}">{{$department->DepartmentName}}</option>
+                                       <option value="{{$department->Department}}">{{$department->DepartmentName}}</option>
                                     @endforeach
                              </select>
-                                       @error('PayrollDepartment')
+                                       @error('Department')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -309,6 +309,114 @@
                                        required autocomplete="email" 
                                        autofocus >
                                 @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="OtherEmail" class="col-md-2 col-form-label text-md-right">Other E-mail Address</label>
+                            <div class="col-md-6">
+                                <input id="OtherEmail" 
+                                       type="text" 
+                                       class="form-control @error('OtherEmail') is-invalid @enderror" 
+                                       name="OtherEmail" 
+                                       value="{{ old('OtherEmail') }}" 
+                                       autocomplete="OtherEmail" 
+                                       autofocus >
+                                @error('OtherEmail')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="PhoneNumber" class="col-md-2 col-form-label text-md-right">PhoneNumber</label>
+                            <div class="col-md-6">
+                                <input id="PhoneNumber" 
+                                       type="text" 
+                                       class="form-control @error('PhoneNumber') is-invalid @enderror" 
+                                       name="PhoneNumber" 
+                                       value="{{ old('PhoneNumber') }}" 
+                                       autocomplete="PhoneNumber" 
+                                       autofocus >
+                                @error('PhoneNumber')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="EmegencyContantPerson" class="col-md-2 col-form-label text-md-right">Emegency Contant Person</label>
+                            <div class="col-md-6">
+                                <input id="EmegencyContantPerson" 
+                                       type="text" 
+                                       class="form-control @error('EmegencyContantPerson') is-invalid @enderror" 
+                                       name="EmegencyContantPerson" 
+                                       value="{{ old('EmegencyContantPerson') }}" 
+                                       autocomplete="EmegencyContantPerson" 
+                                       autofocus >
+                                @error('EmegencyContantPerson')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group row">
+                            <label for="EmegencyContactNumber" class="col-md-2 col-form-label text-md-right">Emegency Contact Number</label>
+                            <div class="col-md-6">
+                                <input id="EmegencyContactNumber" 
+                                       type="text" 
+                                       class="form-control @error('EmegencyContactNumber') is-invalid @enderror" 
+                                       name="EmegencyContactNumber" 
+                                       value="{{ old('EmegencyContactNumber') }}" 
+                                       autocomplete="EmegencyContactNumber" 
+                                       autofocus >
+                                @error('EmegencyContactNumber')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="StaffCurrentAddress" class="col-md-2 col-form-label text-md-right">Staff Current Address</label>
+                            <div class="col-md-6">
+                                <input id="StaffCurrentAddress" 
+                                       type="text" 
+                                       class="form-control @error('StaffCurrentAddress') is-invalid @enderror" 
+                                       name="StaffCurrentAddress" 
+                                       value="{{ old('StaffCurrentAddress') }}" 
+                                       autocomplete="StaffCurrentAddress" 
+                                       autofocus >
+                                @error('StaffCurrentAddress')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="StaffHomeAddress" class="col-md-2 col-form-label text-md-right">Staff Home Address</label>
+                            <div class="col-md-6">
+                                <input id="StaffHomeAddress" 
+                                       type="text" 
+                                       class="form-control @error('StaffHomeAddress') is-invalid @enderror" 
+                                       name="StaffHomeAddress" 
+                                       value="{{ old('StaffHomeAddress') }}" 
+                                       autocomplete="StaffHomeAddress" 
+                                       autofocus >
+                                @error('StaffHomeAddress')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

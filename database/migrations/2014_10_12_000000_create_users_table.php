@@ -15,18 +15,36 @@ class CreateUsersTable extends Migration
     {
         if(!Schema::hastable('users')){ //check if table does not exist then create new
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('first_name');
-             $table->string('last_name');
-             $table->string('facility_name')->nullable();
-             $table->string('profession')->nullable();
-             $table->string('user_role')->nullable();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('UpdatedBy')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+                $table->bigIncrements('id');
+                $table->string('EmployeeID')->unique();
+                $table->string('FirstName')->nullable();
+                $table->string('LastName')->nullable();
+                $table->date('Dob')->nullable();
+                $table->string('Gender')->nullable();
+                $table->string('JobTitle')->unique();
+                $table->date('DateOfEmployment')->nullable();
+                $table->date('DateOfLastPromotion');
+                $table->string('MaritalStatus')->nullable();
+                $table->integer('LeaveBalance')->nullable();
+                $table->string('Nationality')->nullable();
+                $table->string('NationalIDNum')->nullable();
+                $table->string('BirthCertificateNum')->nullable();
+                $table->string('CurrentStatus')->nullable();
+                $table->string('Department')->nullable();
+                $table->string('AbsorbedInNIMR')->unique();
+                $table->string('UserRole')->nullable();
+                $table->string('email')->unique();
+                $table->string('OtherEmail')->nullable();
+                $table->string('PhoneNumber')->nullable();
+                $table->string('EmegencyContantPerson')->nullable();
+                $table->string('EmegencyContactNumber')->nullable();
+                $table->string('StaffCurrentAddress')->nullable();
+                $table->string('StaffHomeAddress')->nullable();
+                $table->timestamp('email_verified_at')->nullable();
+                $table->string('password');
+                $table->string('UpdatedBy')->nullable();
+                $table->rememberToken();
+                $table->timestamps();
         });
     }
     }

@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\Hrs_departments;
-use App\Hrs_leaverequests;
-use App\Hrs_leavebalances;
+use App\Department;
+use App\Leaverequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,16 +24,16 @@ class LeaverequestController extends Controller
             $Search = $request->input('Search');
             if ($Search !=""){
 
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('hrs_leaverequests.EmployeeID', auth::user()->EmployeeID)
+                $leaverequest = \DB::table('leaverequests')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->paginate(10);
  
         return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             }else{
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('hrs_leaverequests.EmployeeID', auth::user()->EmployeeID)
+                $leaverequest = \DB::table('Leaverequests')->
+                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->paginate(10);
 
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
@@ -51,17 +50,17 @@ class LeaverequestController extends Controller
 
             $Search = $request->input('Search');
             if ($Search !=""){
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('hrs_leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->where('hrs_leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                $leaverequest = \DB::table('leaverequests')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('leaverequests.DepartmentID', auth::user()->PayrollDepartment)
                 ->paginate(10);
  
         return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
             }else{
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('hrs_leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                $leaverequest = \DB::table('Leaverequests')->
+                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.DepartmentID', auth::user()->PayrollDepartment)
                 ->paginate(10);
 
             return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
@@ -78,15 +77,15 @@ class LeaverequestController extends Controller
             $Search = $request->input('Search');
             if ($Search !=""){
 
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('hrs_leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                $leaverequest = \DB::table('Leaverequests')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
                 ->paginate(10);
  
         return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
             }else{
-                $leaverequest = \DB::table('hrs_leaverequests')->
-                join('users' , 'hrs_leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequest = \DB::table('Leaverequests')->
+                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->paginate(10);
 
             return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
@@ -105,6 +104,9 @@ class LeaverequestController extends Controller
     public function create()
     {
         //
+        $deptstaff = User::where('Department',auth::user()->Department)->get();
+        $user = User::find(auth::user()->id);
+        return view('leaverequests.create')->with('deptstaff', $deptstaff)->with('User', $user);
     }
 
     /**
@@ -116,6 +118,47 @@ class LeaverequestController extends Controller
     public function store(Request $request)
     {
         //
+
+        if (Auth::check()){
+
+              $StartDate = strtotime($request->input('StartDate')); // or your date as well
+              $EndDate = strtotime($request->input('EndDate'));
+              $datediff = $EndDate - $StartDate;
+              $days= round($datediff / (60 * 60 * 24));
+
+            $validatedData = $request->validate([
+                'ContactTelephone' => 'required|regex:/(0)[0-9]{9}/',
+                'StartDate' => 'required|date|before:EndDate',
+                'DaysRequested' => 'required|integer|lte:LeaveBalance|gte:'.$days,
+                'EndDate' => 'required|date|after:StartDate',
+                'TypeOfLeave' => 'required|string|max:50',
+                'Substitute' => 'required|string|max:50',
+                ]);
+
+            $ID=$request->input('EmployeeID');
+           $apply=Leaverequest::create([
+                     'EmployeeID'=>$request->input('EmployeeID'),
+                     'DepartmentID'=>$request->input('DepartmentID'),
+                     'RequestDate'=>date("Y-m-d"),
+                     'StartDate'=>$request->input('StartDate'),
+                     'DaysRequested'=>$request->input('DaysRequested'),
+                     'EndDate'=>$request->input('EndDate'),
+                     'TypeOfLeave'=>$request->input('TypeOfLeave'),
+                     'Substitute'=>$request->input('Substitute'),
+                     'ContactTelephone'=>$request->input('ContactTelephone'),
+                     'RequestStatus'=>'Pending Substitute Approval',
+                     'DaysApproved'=>'0',
+                     'UpdatedBy'=>auth::user()->email,
+                     'user_id'=>auth::user()->id
+                     ]);
+
+                     if($apply){
+                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');;
+
+        }else{
+            return back()->withinput()->with('errors','Error Occured, Probably this user exist');
+        }
+    }
     }
 
     /**

@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Hrs_departments;
+use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\MedicalCaseController;
 
 class DepartmentController extends Controller
 {
@@ -19,13 +18,13 @@ class DepartmentController extends Controller
 
             $Search = $request->input('Search');
             if ($Search !=""){
-                $departments = Hrs_departments::where('id','LIKE', '%' . $Search . '%')
+                $departments = Department::where('id','LIKE', '%' . $Search . '%')
                 ->orWhere('DepartmentName','LIKE', '%' . $Search . '%')
                 ->orWhere('DepartmentDescription','LIKE', '%' . $Search . '%')
                 ->paginate(10);
         return view('departments.index',['department'=>$departments]);
             }else{
-            $departments = Hrs_departments::where('id','!=',0) ->paginate(10);
+            $departments = Department::where('id','!=',0) ->paginate(10);
             return view('departments.index',['department'=>$departments]);
         }
     }
@@ -52,7 +51,7 @@ class DepartmentController extends Controller
     {
         //
         if (Auth::check()){
-            $departments=Hrs_departments::create([
+            $departments=Department::create([
                                     'DepartmentName'=>$request->input('DepartmentName'),
                                     'DepartmentDescription'=>$request->input('DepartmentDescription'),
                                     'UpdatedBy'=>auth::user()->email
@@ -85,10 +84,10 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Hrs_departments $department)
+    public function edit(Department $department)
     {
         //
-        $departments  = Hrs_departments::find($department->id);
+        $departments  = Department::find($department->id);
         return view('departments.edit',['departments'=>$departments]);
     }
     /**
@@ -98,9 +97,9 @@ class DepartmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hrs_departments $department)
+    public function update(Request $request, Department $department)
     {
-        $departments=Hrs_departments::where('id', $department->id)
+        $departments=Department::where('id', $department->id)
                               ->update([
                                 'DepartmentName'=>$request->input('DepartmentName'),
                                 'DepartmentDescription'=>$request->input('DepartmentDescription'),

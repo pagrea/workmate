@@ -27,23 +27,27 @@
     <th>Last Name</th>
     <th>Gender</th>
     <th>JobTitle</th>
+    <th>Department</th>
     <th>Email</th>
-    <th>Dob</th>
-    <th>PayrollDepartment</th>
+    <th>Action</th>
     
   </tr>
   </thead>
   <tbody>
     @foreach($users as $user)
       <tr>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->EmployeeID}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->FirstName}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->LastName}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->Gender}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->JobTitle}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->email}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->Dob}}</a></td>
-        <td><a href="/user/{{$user->id}}/edit">{{$user->PayrollDepartment}}</a></td>
+        <td>{{$user->EmployeeID}}</td>
+        <td>{{$user->FirstName}}</td>
+        <td>{{$user->LastName}}</td>
+        <td>{{$user->Gender}}</td>
+        <td>{{$user->JobTitle}}</td>
+        <td>{{$user->Department}}</td>
+        <td>{{$user->email}}</td>
+        <td>
+        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">View More</a>
+        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}/edit" role="button">Edit</a>
+        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Permision</a>
+        </td>
       </tr>
       @endforeach
   </tbody>

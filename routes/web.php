@@ -45,5 +45,5 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('departmentalleavehistory','LeaverequestController@departmentalleavehistory');
     Route::get('employeeleavehistory','LeaverequestController@employeeleavehistory');
     
-
+    
 });

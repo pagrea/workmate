@@ -1,11 +1,9 @@
 <?php
 namespace App\Http\Controllers;
 use App\User;
-use App\Hrs_departments;
-use App\Hrs_3staffaddress;
-use App\Hrs_leavebalances;
+use App\Department;
 use App\Http\Controllers\DB;
-
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -46,72 +44,6 @@ class UsersController extends Controller
     }
     }
 
-
-    public function staffaddresses(Request $request)
-    {
-        if (Auth::check()){
-
-            $Search = $request->input('Search');
-            if ($Search !=""){
-                
-                //$users = Hrs_3staffaddress::where('EmployeeID','LIKE', '%' . $Search . '%')
-                $users = \DB::table('hrs_3staffaddresses')
-                ->join('users' , 'hrs_3staffaddresses.EmployeeID' , '=','users.EmployeeID')
-                ->orWhere('StaffCurrentAddress','LIKE', '%' . $Search . '%')
-                ->orWhere('StaffHomeAddress','LIKE', '%' . $Search . '%')
-                ->orWhere('HomeRegion','LIKE', '%' . $Search . '%')
-                ->orWhere('HomeDistrict','LIKE', '%' . $Search . '%')
-                ->orWhere('StaffTelephone1','LIKE', '%' . $Search . '%')
-                ->orWhere('StaffEmail1','LIKE', '%' . $Search . '%')
-                ->orWhere('StaffEmail2','LIKE', '%' . $Search . '%')
-                ->orWhere('EmegencyContantPerson','LIKE', '%' . $Search . '%')
-                ->orWhere('EmegencyContactNumber','LIKE', '%' . $Search . '%')
-                ->orWhere('FirstName','LIKE', '%' . $Search . '%')
-                ->orWhere('LastName','LIKE', '%' . $Search . '%')
-                ->paginate(10);
-                
-        return view('users.staffaddresses',['users'=>$users]);
-            }else{
-
-                $users = \DB::table('hrs_3staffaddresses')->
-               join('users' , 'hrs_3staffaddresses.EmployeeID' , '=','users.EmployeeID')->paginate(10);
-               //$users = Hrs_3staffaddress::where('EmployeeID','!=',0)->get();
-
-            return view('users.staffaddresses',['users'=>$users]);
-        }
-    }
-    }
-
-
-
-    public function staffleavebalance(Request $request)
-    {
-        if (Auth::check()){
-
-            $Search = $request->input('Search');
-            if ($Search !=""){
-               // $users = Hrs_leavebalances::where('EmployeeID','LIKE', '%' . $Search . '%')
-               $users = \DB::table('hrs_leavebalances')->
-               join('users' , 'hrs_leavebalances.EmployeeID' , '=','users.EmployeeID')
-                ->orWhere('Balance','LIKE', '%' . $Search . '%')
-                ->orWhere('FirstName','LIKE', '%' . $Search . '%')
-                ->orWhere('LastName','LIKE', '%' . $Search . '%')
-                ->paginate(10);
-        return view('users.staffleavebalance',['users'=>$users]);
-            }else{
-
-
-                $users = \DB::table('hrs_leavebalances')->
-               join('users' , 'hrs_leavebalances.EmployeeID' , '=','users.EmployeeID')->paginate(10);
-            //$users = Hrs_leavebalances::where('EmployeeID','!=',0)->get();
-            return view('users.staffleavebalance',['users'=>$users]);
-        }
-    }
-    }
-
-
-
-
     
     /**
      * Show the form for creating a new resource.
@@ -120,7 +52,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-       $departments = Hrs_departments::where('id','!=',0)->get();
+       $departments = Department::where('id','!=',0)->get();
         return view('users.create')->with('departments', $departments);
     }
 
@@ -134,6 +66,31 @@ class UsersController extends Controller
     {
 
          if (Auth::check()){
+
+            $validatedData = $request->validate([
+                'EmployeeID' => 'required|string',
+                'FirstName' => 'required|string',
+                'LastName' => 'required|string',
+                'Dob' => 'required|date',
+                'Gender' => 'required|string',
+                'JobTitle' => 'required|string',
+                'DateOfEmployment' => 'date',
+                'DateOfLastPromotion' => 'date',
+                'MaritalStatus' => 'required|string',
+                'LeaveBalance' => 'required|integer',
+                'Nationality' => 'required|string',
+                'NationalIDNum' => 'string',
+                'BirthCertificateNum' => 'string',
+                'CurrentStatus' => 'required|string',
+                'Department' => 'required|string',
+                'AbsorbedInNIMR' => 'required|string',
+                'email' => 'required|email|string',
+                'PhoneNumber' => 'required|regex:/(0)[0-9]{9}/',
+                'EmegencyContactNumber' => 'required|regex:/(0)[0-9]{9}/',
+                'StaffHomeAddress' => 'required|string',
+                'StaffCurrentAddress' => 'required|string',
+                ]);
+
             $ID=$request->input('EmployeeID');
            $addusers=User::create([
                      'EmployeeID'=>$request->input('EmployeeID'),
@@ -145,7 +102,7 @@ class UsersController extends Controller
                      'DateOfEmployment'=>$request->input('DateOfEmployment'),
                      'DateOfLastPromotion'=>$request->input('DateOfLastPromotion'),
                      'MaritalStatus'=>$request->input('MaritalStatus'),
-                     'EntitledLeaveDays'=>$request->input('EntitledLeaveDays'),
+                     'LeaveBalance'=>$request->input('LeaveBalance'),
                      'Nationality'=>$request->input('Nationality'),
                      'NationalIDNum'=>$request->input('NationalIDNum'),
                      'BirthCertificateNum'=>$request->input('BirthCertificateNum'),
@@ -153,68 +110,24 @@ class UsersController extends Controller
                      'PayrollDepartment'=>$request->input('PayrollDepartment'),
                      'AbsorbedInNIMR'=>$request->input('AbsorbedInNIMR'),
                      'email'=>$request->input('email'),
+                     'OtherEmail'=>$request->input('OtherEmail'),
+                     'PhoneNumber'=>$request->input('PhoneNumber'),
+                     'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
+                     'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
+                     'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
+                     'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
                      'password'=>Hash::make($request->input('password')),
                      'UpdatedBy'=>auth::user()->email
                      ]);
 
                      if($addusers){
-                return redirect()->route('user.createstaffaddresses')->with('success','Information have been saved Successfully, Now fill the staff address here.');;
+                return redirect()->route('user.index')->with('success','Information have been saved Successfully, Now fill the staff address here.');;
 
         }else{
             return back()->withinput()->with('errors','Error Occured, Probably this user exist');
         }
     }
 }
-
-/***********************************************Update staff************************* */
-    public function storestaffaddresses(Request $request)
-    {
-        if (Auth::check()){
-        $update=Hrs_3staffaddress::create([
-                                'EmployeeID'=>$request->input('EmployeeID'),
-                                'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
-                                'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
-                                'HomeRegion'=>$request->input('HomeRegion'),
-                                'StaffTelephone1'=>$request->input('StaffTelephone1'),
-                                'StaffTelephone2'=>$request->input('StaffTelephone2'),
-                                'StaffTelephone3'=>$request->input('StaffTelephone3'),
-                                'StaffEmail1'=>$request->input('StaffEmail1'),
-                                'StaffEmail2'=>$request->input('StaffEmail2'),
-                                'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
-                                'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
-                                'UpdatedBy'=>auth::user()->email
-                             ]);
-if ($update){
-return redirect()->route('user.createleavebalance')->with('success','Information have been saved Successfully, Now fill the staff leave Balance here.');;
- // return back()->withinput()->with('success','Information have been saved Successfully');
-}
-
-        //redirect
-       // return back()->withinput();
-       return back()->withinput()->with('errors','Error Updating information');
-    }
-}
-
-/***********************************************store leave balance************************* */
-public function storeleavebalance(Request $request)
-{
-    if (Auth::check()){
-    $update=Hrs_leavebalances::create([
-                            'EmployeeID'=>$request->input('EmployeeID'),
-                            'Balance'=>$request->input('Balance'),
-                            'UpdatedBy'=>auth::user()->email
-                         ]);
-if ($update){
-return redirect()->route('user.index')->with('success','Information have been saved Successfully, Now you have completed the registration of New Staff.');;
-//return back()->withinput()->with('success','Information have been saved Successfully, Now you have completed the registration.');
-}
-
-    //redirect
-   // return back()->withinput();
-   return back()->withinput()->with('errors','Error Updating information');
-}
-}
-
 
     /**
      * Display the specified resource.
@@ -236,7 +149,7 @@ return redirect()->route('user.index')->with('success','Information have been sa
     public function edit(User $user)
     {
         //
-        $departments = Hrs_departments::where('id','!=',0)->get();
+        $departments = Department::where('id','!=',0)->get();
         $User  = User::find($user->id);
         return view('users.edit')->with('departments', $departments)->with('User', $User);
 
@@ -254,36 +167,6 @@ return redirect()->route('user.index')->with('success','Information have been sa
         return view('users.editpassword');
     }
 
-    public function createstaffaddresses()
-    {
-        $user = User::where('id','!=',0)->get();
-        return view('users.createstaffaddresses')->with('user', $user);
-    }
-
-
-    public function editstaffaddresses($EmployeeID)
-    {
-        $user = User::where('id','!=',0)->get();
-        $useraddr = Hrs_3staffaddress::where('EmployeeID',$EmployeeID)->get();
-        return view('users.editstaffaddresses')->with('user', $user)->with('useraddr', $useraddr);
-    }
-    
-
-    public function createleavebalance()
-    {
-        $user = User::where('id','!=',0)->get();
-        return view('users.createleavebalance')->with('user', $user);
-    }
-    
-
-
-    public function editleavebalance($EmployeeID)
-    {
-        $user = Hrs_leavebalances::where('EmployeeID',$EmployeeID)->get();
-        return view('users.editleavebalance')->with('user', $user);
-    }
-    
-    
     /**
      * Update the specified resource in storage.
      *
@@ -293,6 +176,30 @@ return redirect()->route('user.index')->with('success','Information have been sa
      */
     public function update(Request $request, User $User)
     {
+
+        $validatedData = $request->validate([
+            'EmployeeID' => 'required|string',
+            'FirstName' => 'required|string',
+            'LastName' => 'required|string',
+            'Dob' => 'required|date',
+            'Gender' => 'required|string',
+            'JobTitle' => 'required|string',
+            'DateOfEmployment' => 'date',
+            'DateOfLastPromotion' => 'date',
+            'MaritalStatus' => 'required|string',
+            'LeaveBalance' => 'required|integer',
+            'Nationality' => 'required|string',
+            'NationalIDNum' => 'string',
+            'BirthCertificateNum' => 'string',
+            'CurrentStatus' => 'required|string',
+            'Department' => 'required|string',
+            'AbsorbedInNIMR' => 'required|string',
+            'email' => 'required|email|string',
+            'PhoneNumber' => 'required|regex:/(0)[0-9]{9}/',
+            'EmegencyContactNumber' => 'required|regex:/(0)[0-9]{9}/',
+            'StaffHomeAddress' => 'required|string',
+            'StaffCurrentAddress' => 'required|string',
+            ]);
         $user=User::where('id', $User->id)
                               ->update([
                                 'EmployeeID'=>$request->input('EmployeeID'),
@@ -304,47 +211,25 @@ return redirect()->route('user.index')->with('success','Information have been sa
                                 'DateOfEmployment'=>$request->input('DateOfEmployment'),
                                 'DateOfLastPromotion'=>$request->input('DateOfLastPromotion'),
                                 'MaritalStatus'=>$request->input('MaritalStatus'),
-                                'EntitledLeaveDays'=>$request->input('EntitledLeaveDays'),
+                                'LeaveBalance'=>$request->input('LeaveBalance'),
                                 'Nationality'=>$request->input('Nationality'),
                                 'NationalIDNum'=>$request->input('NationalIDNum'),
                                 'BirthCertificateNum'=>$request->input('BirthCertificateNum'),
                                 'CurrentStatus'=>$request->input('CurrentStatus'),
-                                'PayrollDepartment'=>$request->input('PayrollDepartment'),
+                                'Department'=>$request->input('Department'),
                                 'AbsorbedInNIMR'=>$request->input('AbsorbedInNIMR'),
                                 'email'=>$request->input('email'),
+                                'OtherEmail'=>$request->input('OtherEmail'),
+                                'PhoneNumber'=>$request->input('PhoneNumber'),
+                                'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
+                                'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
+                                'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
+                                'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
                                 'UpdatedBy'=>auth::user()->email
                                        ]);
 if ($user){
     //return back()->withinput()->with('success','Updated Successfully');
     return redirect()->route('user.index')->with('success','Information Updated Successfully');
-}
-
-        //redirect
-       // return back()->withinput();
-       return back()->withinput()->with('errors','Error Updating');
-    }
-
-
-
-    public function updatestaffaddresses(Request $request)
-    {
-        $user=Hrs_3staffaddress::where('EmployeeID', $request->input('EmployeeID'))
-                              ->update([
-                                'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
-                                'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
-                                'HomeRegion'=>$request->input('HomeRegion'),
-                                'HomeDistrict'=>$request->input('HomeDistrict'),
-                                'StaffTelephone1'=>$request->input('StaffTelephone1'),
-                                'StaffTelephone2'=>$request->input('StaffTelephone2'),
-                                'StaffEmail1'=>$request->input('StaffEmail1'),
-                                'StaffEmail2'=>$request->input('StaffEmail2'),
-                                'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
-                                'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
-                                'UpdatedBy'=>auth::user()->email
-                                       ]);
-if ($user){
-    //return back()->withinput()->with('success','Updated Successfully');
-    return redirect()->route('user.staffaddresses')->with('success','Information Updated Successfully');
 }
 
         //redirect
@@ -376,27 +261,6 @@ if ($user){
     }
 
 
-
-    /******************************  Update Profile************************************************ */
-    public function updateleavebalance(Request $request)
-    {
-        $user=Hrs_leavebalances::where('EmployeeID', $request->input('EmployeeID'))
-                              ->update([
-                                'Balance'=>$request->input('Balance'),
-                                'UpdatedBy'=>auth::user()->email,
-                                       ]);
-if ($user){
-    return redirect()->route('user.staffleavebalance')->with('success','Leave Balance Updated Successfully');
-}
-
-        //redirect
-       // return back()->withinput();
-       return back()->withinput()->with('errors','Error Updating Leave Balance');
-    }
-
-
-
-    
 /******************************  Update Password************************************************ */
     public function updatepassword(Request $request)
     {
