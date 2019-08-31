@@ -125,7 +125,7 @@ return [
                 ],
                 [
                     'text' => 'Substitute Leave Approval',
-                    'url'  => '/user',
+                    'url'  => '/substituteleaveapproval',
                     'icon' => 'user',
                 ],
         ],
@@ -138,7 +138,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'HOD Leave Approval',
-                    'url'  => '/user',
+                    'url'  => '/hodleaveapproval',
                     'icon' => 'pencil',
                 ],
                 [
@@ -196,7 +196,7 @@ return [
 
                 [
                     'text' => 'HR Leave Approval',
-                    'url'  => '/user',
+                    'url'  => '/hrleaveapproval',
                     'icon' => 'pencil',
                 ],
     
