@@ -38,6 +38,9 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval');
     Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval');
     Route::get('hrleaveapproval','LeaverequestController@hrleaveapproval');
+    Route::get('personalleavehistoryexport','LeaverequestController@personalleavehistoryexport');
+    Route::get('Exportdepartmentalleavehistory','LeaverequestController@Exportdepartmentalleavehistory');
+    Route::get('ExportAllstaffsleavehistory','LeaverequestController@ExportAllstaffsleavehistory');
     
     Route::get('departmentalleavehistory','LeaverequestController@departmentalleavehistory');
     Route::get('employeeleavehistory','LeaverequestController@employeeleavehistory');

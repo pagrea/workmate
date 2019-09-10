@@ -238,12 +238,12 @@ return [
         'submenu' => [
             [
                 'text' => 'HOD Leave Approval',
-                'url'  => '/user',
+                'url'  => '#',
                 'icon' => 'pencil',
             ],
             [
                 'text' => 'HODs Leave History',
-                'url'  => '/user',
+                'url'  => '#',
                 'icon' => 'th-list',
             ],
 

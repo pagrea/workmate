@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\DepartmentalleavehistoryExports;
+use App\Exports\AllstaffsleavehistoryExports;
+use App\Exports\LeavehistoryExports;
+use Maatwebsite\Excel\Facades\Excel;
 use App\User;
 use App\Department;
 use App\Leaverequest;
@@ -283,4 +286,20 @@ class LeaverequestController extends Controller
     {
         //
     }
+    public function personalleavehistoryexport() 
+    {
+        return Excel::download(new LeavehistoryExports, 'personalleavehistory.xlsx');
+    }
+    public function Exportdepartmentalleavehistory() 
+    {
+        return Excel::download(new DepartmentalleavehistoryExports, 'DepartmentalleavehistoryExports.xlsx');
+    }
+
+    public function ExportAllstaffsleavehistory() 
+    {
+        return Excel::download(new AllstaffsleavehistoryExports, 'AllstaffsleavehistoryExports.xlsx');
+    }
+
+    
+    
 }

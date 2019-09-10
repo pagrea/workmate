@@ -6,6 +6,7 @@
 
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
+  <a class="pull-left btn btn-primary btn-sm" href="/Exportdepartmentalleavehistory">ExportToExcel</a>
   <form action="/departmentalleavehistory" method="get">
   <H3 align="center"><b>Departmental Leave Hstory</b></H3>
     {{ csrf_field() }}
