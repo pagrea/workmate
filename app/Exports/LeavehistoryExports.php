@@ -21,6 +21,7 @@ class LeavehistoryExports implements FromCollection, WithHeadings, ShouldAutoSiz
             $leaverequest = \DB::table('leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+            ->orderBy('Leaverequests.id', 'DESC')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
@@ -38,6 +39,7 @@ class LeavehistoryExports implements FromCollection, WithHeadings, ShouldAutoSiz
             $leaverequest = \DB::table('leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+            ->orderBy('Leaverequests.id', 'DESC')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',

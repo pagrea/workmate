@@ -20,6 +20,7 @@ class DepartmentalleavehistoryExports implements FromCollection, WithHeadings, S
             $leaverequest = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->orderBy('FirstName')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
@@ -35,6 +36,7 @@ class DepartmentalleavehistoryExports implements FromCollection, WithHeadings, S
             $leaverequest = \DB::table('leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.DepartmentID', auth::user()->Department)
+            ->orderBy('FirstName')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',

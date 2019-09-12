@@ -19,6 +19,7 @@ class AllstaffsleavehistoryExports implements FromCollection, WithHeadings, Shou
         if ($Search2 ==""){
             $leaverequest = \DB::table('Leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->orderBy('FirstName')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
@@ -33,6 +34,7 @@ class AllstaffsleavehistoryExports implements FromCollection, WithHeadings, Shou
         }else{
             $leaverequest = \DB::table('Leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->orderBy('FirstName')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
