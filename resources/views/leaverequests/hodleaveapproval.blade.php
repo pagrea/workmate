@@ -28,6 +28,7 @@
     <th>DaysRequested</th>
     <th>EndDate</th>
     <th>TypeOfLeave</th>
+    <th>LeaveBalance</th>
     <th>Action</th>
     
   </tr>
@@ -41,9 +42,11 @@
         <td>{{$leaverequest->DaysRequested}}</td>
         <td>{{$leaverequest->EndDate}}</td>
         <td>{{$leaverequest->TypeOfLeave}}</td>
+        <td>{{$leaverequest->LeaveBalance}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Accept</a>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Decline</a>
+        <a onclick='return confirm("Are you sure You want to Approve As HOD?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hodAccept/{{$leaverequest->id}}" role="button">Accept</a>
+        <a onclick='return confirm("Are you sure You want to Decline?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hodDecline/{{$leaverequest->id}}" role="button">Decline</a>
+     
         </td>
       </tr>
       @endforeach

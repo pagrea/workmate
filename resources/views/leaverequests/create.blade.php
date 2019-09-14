@@ -106,11 +106,16 @@
                             <div class="col-md-6">
                             <select id="TypeOfLeave" required name="TypeOfLeave" class="form-control @error('Substitute') is-invalid @enderror"/>
                                   <option value="{{ old('TypeOfLeave') }}">{{ old('TypeOfLeave') }}</option>
-                                  <option value="Annual Leave">Annual Leave</option>
-                                  <option value="Emergency Leave">Emergency Leave</option>
-                                  <option value="Matenity Leave">Matenity Leave</option>
-                                  <option value="Patenity Leave">Patenity Leave</option>
-                                  <option value="Sick Leave">Sick Leave</option>
+                                  <option value="Annual">Annual</option>
+                                  <option value="Emergence">Emergence</option>
+                                  <option value="Matenity Leave">Maternity</option>
+                                  <option value="Patenity Leave">Paternity</option>
+                                  <option value="Sick">Sick</option>
+                                  <option value="Overtime Compensation">Overtime Compensation</option>
+                                  <option value="compassionate">compassionate</option>
+                                  <option value="Overtime Compensation">Other</option>
+
+                                  
                              </select>
                                        @error('TypeOfLeave alert-danger')
                                     <span class="invalid-feedback" role="alert">

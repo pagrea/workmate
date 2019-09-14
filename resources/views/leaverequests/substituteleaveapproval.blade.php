@@ -22,6 +22,7 @@
 <table class="table table-bordered table-striped" >
 <thead>
   <tr>
+  <th>RequestID</th>
     <th>EmployeeID</th>
     <th>Name</th>
     <th>StartDate</th>
@@ -35,6 +36,7 @@
   <tbody>
     @foreach($leaverequests as $leaverequest)
       <tr>
+        <td>{{$leaverequest->id}}</td>
         <td>{{$leaverequest->EmployeeID}}</td>
         <td>{{$leaverequest->FirstName}} {{$leaverequest->LastName}}</td>
         <td>{{$leaverequest->StartDate}}</td>
@@ -42,8 +44,9 @@
         <td>{{$leaverequest->EndDate}}</td>
         <td>{{$leaverequest->TypeOfLeave}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Accept</a>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Decline</a>
+        
+        <a onclick='return confirm("Are you sure You want to be a Substitute?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/substituteAccept/{{$leaverequest->id}}" role="button">Accept</a>
+        <a onclick='return confirm("Are you sure You want to Decline to be a Substitute?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/substituteDecline/{{$leaverequest->id}}" role="button">Decline</a>
         </td>
       </tr>
       @endforeach

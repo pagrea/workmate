@@ -1,8 +1,17 @@
 @extends('adminlte::page')
 @section('content')
 
-@include('partials.errors')
 @include('partials.success')
+@if (isset($errors) && count($errors) > 0)
+<div class="alert alert-dismissable alert-danger col-md-9 col-lg-9">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true"> &times; </span>
+          </button>
+       
+    <strong>{!! $errors !!} </strong>
+
+     </div>
+@endif
 
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
@@ -28,7 +37,7 @@
     <th>DaysRequested</th>
     <th>EndDate</th>
     <th>TypeOfLeave</th>
-    <th>Substitute</th>
+    <th>LeaveBalance</th>
     <th>Action</th>
     
   </tr>
@@ -42,10 +51,24 @@
         <td>{{$leaverequest->DaysRequested}}</td>
         <td>{{$leaverequest->EndDate}}</td>
         <td>{{$leaverequest->TypeOfLeave}}</td>
-        <td></td>
+        <td>{{$leaverequest->LeaveBalance}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Accept</a>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Decline</a>
+                <form action="/hrAccept" method="get">
+                <input type="hidden" name="id" value="{{$leaverequest->id}}">
+                <input type="hidden" name="EmployeeID" value="{{$leaverequest->EmployeeID}}">
+                <input type="hidden" name="DaysRequested" value="{{$leaverequest->DaysRequested}}">
+                <input type="hidden" name="TypeOfLeave" value="{{$leaverequest->TypeOfLeave}}">
+                <input type="hidden" name="LeaveBalance" value="{{$leaverequest->LeaveBalance}}">
+                <button onclick='return confirm("Are you sure You want to Approve As HR?? Click Ok to continue or Click Cancel to Cancel")'
+                        type="submit" class="pull-center btn btn-primary btn-sm" 
+                        role="button">Accept
+                </button>
+                <a onclick='return confirm("Are you sure You want to Decline?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hrDecline/{{$leaverequest->id}}">Decline</a>
+
+                             </form>
+                           
+       
+     
         </td>
       </tr>
       @endforeach

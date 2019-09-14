@@ -35,15 +35,19 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('editprofile','UsersController@editprofile');
     Route::resource('departments', 'DepartmentController');
     Route::resource('leaverequests', 'LeaverequestController');
-    Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval');
-    Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval');
-    Route::get('hrleaveapproval','LeaverequestController@hrleaveapproval');
+    Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval')->name('leaverequests.substituteleaveapproval');
+    Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval')->name('leaverequests.hodleaveapproval');
+    Route::get('hrleaveapproval','LeaverequestController@hrleaveapproval')->name('leaverequests.hrleaveapproval');
+
     Route::get('personalleavehistoryexport','LeaverequestController@personalleavehistoryexport');
     Route::get('Exportdepartmentalleavehistory','LeaverequestController@Exportdepartmentalleavehistory');
     Route::get('ExportAllstaffsleavehistory','LeaverequestController@ExportAllstaffsleavehistory');
-    
     Route::get('departmentalleavehistory','LeaverequestController@departmentalleavehistory');
     Route::get('employeeleavehistory','LeaverequestController@employeeleavehistory');
-    
-    
+    Route::get('substituteAccept/{id}','LeaverequestController@substituteAccept');
+    Route::get('substituteDecline/{id}','LeaverequestController@substituteDecline');
+    Route::get('hrAccept','LeaverequestController@hrAccept');
+    Route::get('hrDecline/{id}','LeaverequestController@hrDecline');
+    Route::get('hodAccept/{id}','LeaverequestController@hodAccept');
+    Route::get('hodDecline/{id}','LeaverequestController@hodDecline');
 });
