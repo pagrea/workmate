@@ -6,9 +6,8 @@
 
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
-  <a class="pull-left btn btn-primary btn-sm" href="/ExportAllstaffsleavehistory">ExportToExcel</a>
-  <form action="/employeeleavehistory" method="get">
-  <H3 align="center"><b>All Staffs Leave Hstory</b></H3>
+  <form action="/leaverequests" method="get">
+  <H3 align="center"><b>HOD Leave Approval</b></H3>
     {{ csrf_field() }}
     <div class="input-group">
         <input type="text" class="form-control"  name="Search"
@@ -26,10 +25,11 @@
     <th>EmployeeID</th>
     <th>Name</th>
     <th>StartDate</th>
-    <th>DaysApproved</th>
+    <th>DaysRequested</th>
     <th>EndDate</th>
     <th>TypeOfLeave</th>
-    <th>RequestStatus</th>
+    <th>LeaveBalance</th>
+    <th>Action</th>
     
   </tr>
   </thead>
@@ -39,10 +39,15 @@
         <td>{{$leaverequest->EmployeeID}}</td>
         <td>{{$leaverequest->FirstName}} {{$leaverequest->LastName}}</td>
         <td>{{$leaverequest->StartDate}}</td>
-        <td>{{$leaverequest->DaysApproved}}</td>
+        <td>{{$leaverequest->DaysRequested}}</td>
         <td>{{$leaverequest->EndDate}}</td>
         <td>{{$leaverequest->TypeOfLeave}}</td>
-        <td>{{$leaverequest->RequestStatus}}</td>
+        <td>{{$leaverequest->LeaveBalance}}</td>
+        <td>
+        <a onclick='return confirm("Are you sure You want to Approve As HOD?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hodAccept/{{$leaverequest->id}}" role="button">Accept</a>
+        <a onclick='return confirm("Are you sure You want to Decline?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hodDecline/{{$leaverequest->id}}" role="button">Decline</a>
+     
+        </td>
       </tr>
       @endforeach
   </tbody>

@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\DepartmentalleavehistoryExports;
+use App\Exports\AllstaffsleavehistoryExports;
+use App\Exports\LeavehistoryExports;
+use Maatwebsite\Excel\Facades\Excel;
 use App\User;
 use App\Department;
 use App\Leaverequest;
@@ -29,6 +32,7 @@ class LeaverequestController extends Controller
                 $leaverequest = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+                ->orderBy('Leaverequests.id', 'DESC')
                 ->paginate(10);
  
         return view('leaverequests.index',['leaverequests'=>$leaverequest]);
@@ -36,6 +40,7 @@ class LeaverequestController extends Controller
                 $leaverequest = \DB::table('Leaverequests')->
                 join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('Leaverequests.EmployeeID', auth::user()->EmployeeID)
+                ->orderBy('Leaverequests.id', 'DESC')
                 ->paginate(10);
 
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
@@ -43,11 +48,11 @@ class LeaverequestController extends Controller
     }
     }
 
-
+// 
 
     public function departmentalleavehistory(Request $request)
     {
-        //
+        // 
         if (Auth::check()){
 
             $Search = $request->input('Search');
@@ -55,16 +60,17 @@ class LeaverequestController extends Controller
                 $leaverequest = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->where('leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->orderBy('FirstName')
                 ->paginate(10);
  
         return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
             }else{
                 $leaverequest = \DB::table('Leaverequests')->
                 join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                ->where('Leaverequests.DepartmentID', auth::user()->Department)
+                ->orderBy('FirstName')
                 ->paginate(10);
-
             return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
         }
     }
@@ -82,12 +88,14 @@ class LeaverequestController extends Controller
                 $leaverequest = \DB::table('Leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->orderBy('FirstName')
                 ->paginate(10);
  
         return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
             }else{
                 $leaverequest = \DB::table('Leaverequests')->
                 join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->orderBy('FirstName')
                 ->paginate(10);
 
             return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
@@ -95,8 +103,87 @@ class LeaverequestController extends Controller
     }
     }
 
+/**********************************Substitute Approvals******************************************** */
+    public function substituteleaveapproval(Request $request)
+    {
+        //
+        if (Auth::check()){
 
+            $Search = $request->input('Search');
+            if ($Search !=""){
+                $leaverequest = \DB::table('users')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.Substitute', auth::user()->EmployeeID)
+                ->where('Leaverequests.RequestStatus', 'Pending Substitute Approval')
+                ->paginate(10);
+ 
+        return view('leaverequests.substituteleaveapproval',['leaverequests'=>$leaverequest]);
+            }else{
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.Substitute', auth::user()->EmployeeID)
+                ->where('Leaverequests.RequestStatus', 'Pending Substitute Approval')
+                ->paginate(10);
+
+            return view('leaverequests.substituteleaveapproval',['leaverequests'=>$leaverequest]);
+        }
+    }
+    }
+
+    /**********************************HOD Leave Approvals******************************************** */
+    public function hodleaveapproval(Request $request)
+    {
+        //
+        if (Auth::check()){
+
+            $Search = $request->input('Search');
+            if ($Search !=""){
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                ->paginate(10);
+ 
+        return view('leaverequests.hodleaveapproval',['leaverequests'=>$leaverequest]);
+            }else{
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.DepartmentID', auth::user()->Department)
+                ->where('Leaverequests.RequestStatus', 'Accepted by the substitute')
+                ->paginate(10);
+
+            return view('leaverequests.hodleaveapproval',['leaverequests'=>$leaverequest]);
+        }
+    }
+    }
+
+
+    /**********************************HR Leave Approvals******************************************** */
+    public function hrleaveapproval(Request $request)
+    {
+        //
+        if (Auth::check()){
+
+            $Search = $request->input('Search');
+            if ($Search !=""){
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.RequestStatus', 'Approved As Requested')
+                ->paginate(10);
+ 
+        return view('leaverequests.hrleaveapproval',['leaverequests'=>$leaverequest]);
+            }else{
+                $leaverequest = \DB::table('users')->
+                join('Leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('Leaverequests.RequestStatus', 'Approved As Requested')
+                ->paginate(10);
+            return view('leaverequests.hrleaveapproval')->with('leaverequests', $leaverequest);
     
+        }
+    }
+    }
+
+
     
     /**
      * Show the form for creating a new resource.
@@ -216,4 +303,133 @@ class LeaverequestController extends Controller
     {
         //
     }
+
+     /*******************************Substitute Approval Accept************************************ */
+    public function substituteAccept($id)
+    {
+        //
+        $Leaverequests=Leaverequest::where('id',$id)->update([
+                    'RequestStatus'=>'Accepted by the substitute',
+                    'UpdatedBy'=>auth::user()->email
+                 ]);
+
+if ($Leaverequests){
+return redirect()->route('leaverequests.substituteleaveapproval')->with('success','You have accepted to be a subsitute and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+
+/*******************************Substitute Approval Decline************************************ */
+
+public function substituteDecline($id)
+    {
+        //
+        $Leaverequests=Leaverequest::where('id',$id)->update([
+                    'RequestStatus'=>'Declined by the substitute',
+                    'UpdatedBy'=>auth::user()->email
+                 ]);
+
+if ($Leaverequests){
+return redirect()->route('leaverequests.substituteleaveapproval')->with('success','You have Declined to be a subsitute and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+
+ /*******************************HOD Approval Accept************************************ */
+ public function hodAccept($id)
+ {
+     //
+     $Leaverequests=Leaverequest::where('id',$id)->update([
+                 'RequestStatus'=>'Approved As Requested',
+                 'UpdatedBy'=>auth::user()->email
+              ]);
+
+if ($Leaverequests){
+return redirect()->route('leaverequests.hodleaveapproval')->with('success','You have approved the leave as HOD and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+
+/*******************************HOD Approval Decline************************************ */
+
+public function hodDecline($id)
+ {
+     //
+     $Leaverequests=Leaverequest::where('id',$id)->update([
+                 'RequestStatus'=>'Declined by HoD',
+                 'UpdatedBy'=>auth::user()->email
+              ]);
+
+if ($Leaverequests){
+return redirect()->route('leaverequests.hodleaveapproval')->with('success','You have Declined the leave as HOD and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+
+/*******************************HOD Approval Accept************************************ */
+public function hrAccept(Request $request)
+{
+    //
+
+    $DaysRequested =$request->input('DaysRequested');
+    $TypeOfLeave =$request->input('TypeOfLeave');
+    $id =$request->input('id');
+    $EmployeeID =$request->input('EmployeeID');
+    $LeaveBalance =$request->input('LeaveBalance');
+
+    if (($TypeOfLeave=="Annual" || $TypeOfLeave=="Emergence" || $TypeOfLeave=="Other")){
+        $deductbalance= $LeaveBalance-$DaysRequested;
+       User::where('EmployeeID',$EmployeeID)->update([
+            'LeaveBalance'=>$deductbalance,
+            'UpdatedBy'=>auth::user()->email
+         ]);
+    }
+    $Leaverequests=Leaverequest::where('id',$id)->update([
+        'RequestStatus'=>'Approved by HR',
+        'DaysApproved'=>$DaysRequested,
+        'UpdatedBy'=>auth::user()->email
+     ]);
+
+if ($Leaverequests){
+return redirect()->route('leaverequests.hrleaveapproval')->with('success','You have approved the leave as HR and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+
+}
+
+/*******************************HOD Approval Decline************************************ */
+
+public function hrDecline($id)
+{
+    //
+    $Leaverequests=Leaverequest::where('id',$id)->update([
+                'RequestStatus'=>'Declined by HR',
+                'UpdatedBy'=>auth::user()->email
+             ]);
+
+if ($Leaverequests){
+    
+return redirect()->route('leaverequests.hrleaveapproval')->with('success','You have Declined the leave as HR and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating, Please Contact IT to help on this');
+
+}
+
+    /*******************************Export to Excel ************************************ */
+    public function personalleavehistoryexport() 
+    {
+        return Excel::download(new LeavehistoryExports, 'personalleavehistory.xlsx');
+    }
+    public function Exportdepartmentalleavehistory() 
+    {
+        return Excel::download(new DepartmentalleavehistoryExports, 'DepartmentalleavehistoryExports.xlsx');
+    }
+
+    public function ExportAllstaffsleavehistory() 
+    {
+        return Excel::download(new AllstaffsleavehistoryExports, 'AllstaffsleavehistoryExports.xlsx');
+    }
+
+    
+    
 }
