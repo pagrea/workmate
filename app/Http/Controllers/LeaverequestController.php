@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Department;
 use App\Leaverequest;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\LeaveApprovalRequestReceived;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -153,7 +155,16 @@ class LeaverequestController extends Controller
                      ]);
 
                      if($apply){
-                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');;
+                         $substitute = User::where('EmployeeID', 'LIKE', $request->input('Substitute'))->first();
+                         $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
+                         $substituteEmail = $substitute->email;
+                         $requesterName = auth::user()->FirstName . ' ' . auth::user()->LastName;
+
+                        //Send Email Notification to substitute
+                        Notification::route('mail', $substituteEmail)
+                            ->notify(new LeaveApprovalRequestReceived($requesterName, $substituteName));
+
+                        return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');;
 
         }else{
             return back()->withinput()->with('errors','Error Occured, Probably this user exist');

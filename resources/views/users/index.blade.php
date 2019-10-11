@@ -7,7 +7,7 @@
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
   <form action="/user" method="get">
-  <H3 align="center"><b>Staffs Information</b></H3>
+  <H3 align="center"><b>Staff Information</b></H3>
     {{ csrf_field() }}
     <div class="input-group">
         <input type="text" class="form-control"  name="Search"
