@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     // $this->call(RolesTableSeeder::class);
 
     /***************************Creating Roles************************************************** */
-    \DB::table('roles')->delete();
+    //\DB::table('roles')->delete();
         
     \DB::table('roles')->insert(array (
         0 => 
@@ -62,7 +62,7 @@ class DatabaseSeeder extends Seeder
 
 /***************************Creating permissions************************************************** */
     
-    \DB::table('permissions')->delete();
+    //\DB::table('permissions')->delete();
         
     \DB::table('permissions')->insert(array (
         0 => 
@@ -159,7 +159,7 @@ class DatabaseSeeder extends Seeder
     
     /***************************Linking Permision to roles************************************************** */
 
-    \DB::table('role_has_permissions')->delete();
+    //\DB::table('role_has_permissions')->delete();
         
     \DB::table('role_has_permissions')->insert(array (
         0 => 

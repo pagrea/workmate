@@ -426,6 +426,17 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <div class="form-group row">
+                        <label for="userRole" class="col-md-2 col-form-label text-md-right">User Role</label>
+                            <div class="col-md-6">  
+                            <select id="userRole" data-placeholder="Select a Roles" class="form-control tagsselector" name="roles[]" multiple="multiple">
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}"  {{ $User->roles->contains($role->id) ? 'selected' : '' }}>{{ $role->name }}</option>
+                                    @endforeach
+                            </select>
+                            </div>
+                        </div>
                    
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

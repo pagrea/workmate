@@ -2,11 +2,14 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Department;
-use App\Http\Controllers\DB;
+//use App\Http\Controllers\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use DB;
+
 
 class UsersController extends Controller
 {
@@ -151,7 +154,10 @@ class UsersController extends Controller
         //
         $departments = Department::where('id','!=',0)->get();
         $User  = User::find($user->id);
-        return view('users.edit')->with('departments', $departments)->with('User', $User);
+        $roles = Role::get();
+        $userRole = $User->roles->pluck('name','name')->all();
+        return view('users.edit')->with('departments', $departments)->with('User', $User)
+                                 ->with('roles', $roles)->with('userRole', $userRole);
 
     }
 
@@ -227,7 +233,14 @@ class UsersController extends Controller
                                 'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
                                 'UpdatedBy'=>auth::user()->email
                                        ]);
-if ($user){
+
+        //Update the User's role
+        $updatedUser = User::find($User->id);
+        DB::table('model_has_roles')->where('model_id',$User->id)->delete();
+
+        $updateRoles = $updatedUser->assignRole($request->input('roles'));
+
+if ($user && $updateRoles){
     //return back()->withinput()->with('success','Updated Successfully');
     return redirect()->route('user.index')->with('success','Information Updated Successfully');
 }

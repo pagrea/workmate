@@ -135,6 +135,7 @@ return [
         [
             'text' => 'Head of Department',
             'icon' => 'book', 
+            'can' => 'View HOD corner',
             'submenu' => [
                 [
                     'text' => 'HOD Leave Approval',
@@ -152,7 +153,8 @@ return [
     
         [
             'text' => 'HR Quarters',
-            'icon' => 'th', 
+            'icon' => 'th',
+            'can' => 'View HR Corner', 
             'submenu' => [
                
                
@@ -235,6 +237,7 @@ return [
     [
         'text' => 'Center Director',
         'icon' => 'asterisk', 
+        'can' => 'View director Corner',
         'submenu' => [
             [
                 'text' => 'HOD Leave Approval',
@@ -247,10 +250,24 @@ return [
                 'icon' => 'th-list',
             ],
 
-],
-],
+    ],
+    ],
 
-],
+    [
+        'text' => 'Admin Corner',
+        'icon' => 'gears', 
+        'can' => 'View Admin Corner',
+        'submenu' => [
+            [
+                'text' => 'Manage Roles',
+                'url'  => '/roles',
+                'icon' => 'pencil',
+            ],
+
+    ],
+    ],
+
+    ],
 
     /*
     |--------------------------------------------------------------------------

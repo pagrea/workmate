@@ -50,4 +50,6 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('hrDecline/{id}','LeaverequestController@hrDecline');
     Route::get('hodAccept/{id}','LeaverequestController@hodAccept');
     Route::get('hodDecline/{id}','LeaverequestController@hodDecline');
+
+    Route::resource('roles', 'RolesController');
 });
