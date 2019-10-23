@@ -6,7 +6,10 @@
 
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
+
+  
   <a class="pull-left btn btn-primary btn-sm" href="/personalleavehistoryexport">ExportToExcel</a>
+  <a class="pull-left btn btn-primary btn-sm" href="/sendemail">Send Email</a>
   <form action="/leaverequests" method="get">
   <H3 align="center"><b>My Leave Hstory</b></H3>
     {{ csrf_field() }}

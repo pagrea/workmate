@@ -52,4 +52,7 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('hodDecline/{id}','LeaverequestController@hodDecline');
 
     Route::resource('roles', 'RolesController');
+    Route::get('sendemail','LeaverequestController@sendemail');
+
+    
 });

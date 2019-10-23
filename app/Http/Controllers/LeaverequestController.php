@@ -6,6 +6,7 @@ use App\Exports\AllstaffsleavehistoryExports;
 use App\Exports\LeavehistoryExports;
 use Maatwebsite\Excel\Facades\Excel;
 use App\User;
+use Mail;
 use App\Department;
 use App\Leaverequest;
 use Illuminate\Support\Facades\Notification;
@@ -241,6 +242,11 @@ class LeaverequestController extends Controller
                      'user_id'=>auth::user()->id
                      ]);
 
+        if($apply){
+
+
+                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');;
+=======
                      if($apply){
                          $substitute = User::where('EmployeeID', 'LIKE', $request->input('Substitute'))->first();
                          $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
@@ -252,6 +258,7 @@ class LeaverequestController extends Controller
                             ->notify(new LeaveApprovalRequestReceived($requesterName, $substituteName));
 
                         return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');;
+>>>>>>> 1bb7d49095256aee6a8e98d772e54b616217e9e9
 
         }else{
             return back()->withinput()->with('errors','Error Occured, Probably this user exist');
@@ -408,10 +415,31 @@ public function hrDecline($id)
              ]);
 
 if ($Leaverequests){
-    
+
 return redirect()->route('leaverequests.hrleaveapproval')->with('success','You have Declined the leave as HR and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating, Please Contact IT to help on this');
+
+}
+
+/****************************************************send email********************* */
+public function sendemail()
+{
+    {
+        $data['title'] = "This is Test Mail Tuts Make";
+ 
+        Mail::send('emails.email', $data, function($message) {
+            $message->to('pagrea@nimr-mmrc.org', 'Peter Agrea')
+ 
+                    ->subject('Test Mail');
+        });
+ 
+        if (Mail::failures()) {
+           return response()->Fail('Sorry! Please try again latter');
+         }else{
+           return response()->success('Great! Successfully send in your mail');
+         }
+    }
 
 }
 
