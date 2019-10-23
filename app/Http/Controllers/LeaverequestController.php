@@ -242,7 +242,6 @@ class LeaverequestController extends Controller
                      'user_id'=>auth::user()->id
                      ]);
 
-<<<<<<< HEAD
         if($apply){
 
 
