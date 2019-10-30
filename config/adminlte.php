@@ -154,7 +154,7 @@ return [
         [
             'text' => 'HR Quarters',
             'icon' => 'th',
-            'can' => 'View HR Corner', 
+           'can' => 'View HR Corner', 
             'submenu' => [
                
                
