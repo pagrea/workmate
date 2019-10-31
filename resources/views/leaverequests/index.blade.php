@@ -16,10 +16,10 @@
 <thead>
   <tr>
     <th> <input type="checkbox" class="" name="check1" value="check1">Search by any Category<br>
-   <input type="text" class=""  name="Search" placeholder="Search by any Category"> &nbsp;</th>
+   <input type="text" class=""  name="Search" placeholder="Search by any Category" value="{{ old('Search') }}"> &nbsp;</th>
  <th> <input type="checkbox" class="" name="check2" value="check2">Search By Start date and End date <br>
- StartDate<input type="date" class=""  name="start_date" placeholder="Start date"> &nbsp;
- EndDate<input type="date" class=""  name="end_date" placeholder="End date"> &nbsp;
+ StartDate<input type="date" class=""  name="start_date" value="{{ old('start_date') }}"> &nbsp;
+ EndDate<input type="date" class=""  name="end_date" value="{{ old('end_date') }}"> &nbsp;
  <input type="submit" class="btn btn-primary"  name="send" value="Search"></th>
   </tr>
   </thead>

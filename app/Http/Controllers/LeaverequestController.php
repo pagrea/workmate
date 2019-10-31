@@ -55,6 +55,12 @@ class LeaverequestController extends Controller
             }
         elseif ($check1 =="" && $check2 !="" ){
 
+            $validatedData = $request->validate([
+                'start_date' => 'required|date|before:end_date',
+                'end_date' => 'required|date|after:start_date',
+                ]);
+
+
             $leaverequest = \DB::table('leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
@@ -65,6 +71,11 @@ class LeaverequestController extends Controller
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
         }
             elseif ($check1 !="" && $check2 !="" ){
+                $validatedData = $request->validate([
+                    'start_date' => 'required|date|before:end_date',
+                    'end_date' => 'required|date|after:start_date',
+                    ]);
+
                 $leaverequest = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
@@ -101,24 +112,29 @@ class LeaverequestController extends Controller
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
 
+            $staffNames = \DB::table('leaverequests')->
+            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->where('Leaverequests.DepartmentID', auth::user()->Department)
+            ->distinct()
+            ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
+            ->get();
+
             if ($check1 !="" && $check2 =="" ){
-                $leaverequest = \DB::table('leaverequests')->
+                $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.DepartmentID', auth::user()->Department)
-                ->where('users.FirstName','LIKE', '%' . $Search . '%')
-
-                 ->orWhere('Leaverequests.DepartmentID', auth::user()->Department)
-                ->where('users.LastName','LIKE', '%' . $Search . '%')
-
                 ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
                 ->where('Leaverequests.DepartmentID', auth::user()->Department)
-
                 ->orderBy('Leaverequests.id', 'DESC')
                 ->paginate(10);
  
-        return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
+        return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }elseif ($check1 =="" && $check2 !="" ){
-                $leaverequest = \DB::table('leaverequests')->
+                $validatedData = $request->validate([
+                    'start_date' => 'required|date|before:end_date',
+                    'end_date' => 'required|date|after:start_date',
+                    ]);
+    
+                $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('Leaverequests.DepartmentID', auth::user()->Department)
                 ->where('leaverequests.StartDate','>=', $startDate)
@@ -126,30 +142,30 @@ class LeaverequestController extends Controller
                 
                 ->orderBy('Leaverequests.id', 'DESC')
                 ->paginate(10);
-        return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
+                return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
 
     }elseif ($check1 !="" && $check2 !="" ){
-        $leaverequest = \DB::table('leaverequests')->
+        $validatedData = $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date',
+            ]);
+
+        $leaverequests = \DB::table('leaverequests')->
         join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('Leaverequests.DepartmentID', auth::user()->Department)
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
-        ->where('users.FirstName','LIKE', '%' . $Search . '%')
-
-        ->orWhere('Leaverequests.DepartmentID', auth::user()->Department)
-        ->where('leaverequests.StartDate','>=', $startDate)
-        ->where('leaverequests.StartDate','<=', $endDate)
-        ->where('users.LastName','LIKE', '%' . $Search . '%')
+        ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
         ->orderBy('Leaverequests.id', 'DESC')
         ->paginate(10);
-        return view('leaverequests.index',['leaverequests'=>$leaverequest]);
+        return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }else{
-                $leaverequest = \DB::table('Leaverequests')->
+                $leaverequests = \DB::table('Leaverequests')->
                 join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('Leaverequests.DepartmentID', auth::user()->Department)
                 ->orderBy('FirstName')
                 ->paginate(10);
-            return view('leaverequests.departmentalleavehistory',['leaverequests'=>$leaverequest]);
+                return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
         }
     }
     }
@@ -160,23 +176,63 @@ class LeaverequestController extends Controller
         //
         if (Auth::check()){
 
+               
+            $check1 = $request->input('check1');
+            $check2 = $request->input('check2');
             $Search = $request->input('Search');
-            if ($Search !=""){
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
 
-                $leaverequest = \DB::table('Leaverequests')->
+            $staffNames = \DB::table('leaverequests')->
+            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->distinct()
+            ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
+            ->get();
+
+            if ($check1 !="" && $check2 =="" ){
+                $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->orderBy('FirstName')
+                ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->orderBy('Leaverequests.id', 'DESC')
                 ->paginate(10);
  
-        return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
-            }else{
-                $leaverequest = \DB::table('Leaverequests')->
-                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->orderBy('FirstName')
-                ->paginate(10);
+        return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
-            return view('leaverequests.employeeleavehistory',['leaverequests'=>$leaverequest]);
+    }elseif ($check1 =="" && $check2 !="" ){
+        $validatedData = $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date',
+            ]);
+
+        $leaverequests = \DB::table('leaverequests')->
+        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->where('leaverequests.StartDate','>=', $startDate)
+        ->where('leaverequests.StartDate','<=', $endDate)
+        ->orderBy('Leaverequests.id', 'DESC')
+        ->paginate(10);
+        return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
+
+    }elseif ($check1 !="" && $check2 !="" ){
+        $validatedData = $request->validate([
+            'start_date' => 'required|date|before:end_date',
+            'end_date' => 'required|date|after:start_date',
+            ]);
+
+        $leaverequests = \DB::table('leaverequests')->
+        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->where('leaverequests.StartDate','>=', $startDate)
+        ->where('leaverequests.StartDate','<=', $endDate)
+        ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
+        ->orderBy('Leaverequests.id', 'DESC')
+        ->paginate(10);
+        return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
+
+    }else{
+        $leaverequests = \DB::table('Leaverequests')->
+        join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->orderBy('FirstName')
+        ->paginate(10);
+        return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
         }
     }
     }
