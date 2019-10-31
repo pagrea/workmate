@@ -388,6 +388,15 @@ if ($user){
                         ]);
         }
 
+        $users = User::where('LeaveBalance','>',56)->get();
+        foreach($users as $user){
+                    $user=User::where('id', $user->id)
+                          ->update([
+                            'LeaveBalance'=>'56',
+                    ]);
+    }
+
+
 if ($user){
 
     return back()->withinput()
