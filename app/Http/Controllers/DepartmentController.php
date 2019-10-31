@@ -37,7 +37,7 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+ 
         return view('departments.create');
     }
 
@@ -49,7 +49,7 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
         if (Auth::check()){
             $departments=Department::create([
                                     'DepartmentName'=>$request->input('DepartmentName'),
@@ -123,6 +123,6 @@ if ($departments){
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
