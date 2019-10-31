@@ -12,6 +12,7 @@ use App\Leaverequest;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\LeaveApprovalRequestReceived;
 use App\Notifications\DepartmentalLeaveApprovalRequestReceived;
+use App\Notifications\LeaveApprovalRequestDeclinedBySubstitute;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -454,6 +455,7 @@ if ($Leaverequests){
     $applicantDept = User::where('EmployeeID', 'LIKE', $applicantEmpId)->pluck('Department');
     $hodEmails = User::role('Hod')->where('Department', 'LIKE', $applicantDept)->pluck('email');
 
+    //Send Email to HODs
     Notification::route('mail', $hodEmails)
       ->notify(new DepartmentalLeaveApprovalRequestReceived());
 
@@ -473,6 +475,17 @@ public function substituteDecline($id)
                  ]);
 
 if ($Leaverequests){
+    $updatedLeaveRequest = Leaverequest::findOrFail($id);
+    $applicant = User::where('EmployeeID', 'LIKE', $updatedLeaveRequest->EmployeeID)->first();
+    $applicantEmail = $applicant->email;
+    $applicantName = $applicant->FirstName . ' ' . $applicant->LastName;
+    $substitute = User::where('EmployeeID', 'LIKE', $updatedLeaveRequest->Substitute)->first();
+    $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
+
+    //Send Email notification to Applicant or Substitute Decline
+    Notification::route('mail', $applicantEmail)
+     ->notify(new LeaveApprovalRequestDeclinedBySubstitute($substituteName, $applicantName));
+     
 return redirect()->route('leaverequests.substituteleaveapproval')->with('success','You have Declined to be a subsitute and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating');
