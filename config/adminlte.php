@@ -183,12 +183,12 @@ return [
                 'submenu' => [
                     [
                         'text' => 'Staff Leave Balances',
-                        'url'  => '#',
+                        'url'  => '/staffleavebalance',
                         'icon' => 'th-list',
                     ],
                     [
                         'text' => 'Leave Balance Bulk Update',
-                        'url'  => '#',
+                        'url'  => '/editbulkleavebalance',
                         'icon' => 'pencil',
                     ],
 

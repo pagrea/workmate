@@ -25,15 +25,17 @@
     <th>EmployeeID</th>
     <th>Staff Name</th>
     <th>Balance</th>
+    <th>Action</th>
     
   </tr>
   </thead>
   <tbody>
     @foreach($users as $user)
       <tr>
-        <td><a href="/editleavebalance/{{$user->EmployeeID}}">{{$user->EmployeeID}}</a></td>
-        <td><a href="/editleavebalance/{{$user->EmployeeID}}">{{$user->FirstName}} {{$user->LastName}}</a></td>
-        <td><a href="/editleavebalance/{{$user->EmployeeID}}">{{$user->Balance}}</a></td>
+        <td>{{$user->EmployeeID}}</td>
+        <td>{{$user->FirstName}} {{$user->LastName}}</td>
+        <td>{{$user->LeaveBalance}}</td>
+        <td><a class="pull-center btn btn-primary btn-sm" href="/editleavebalance/{{$user->id}}" role="button">Edit</a></td>
       </tr>
       @endforeach
   </tbody>

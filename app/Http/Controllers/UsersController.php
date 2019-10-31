@@ -47,6 +47,28 @@ class UsersController extends Controller
     }
     }
 
+    public function staffleavebalance(Request $request)
+    {
+        if (Auth::check()){
+
+            $Search = $request->input('Search');
+            if ($Search !=""){
+                $users = User::where('id','LIKE', '%' . $Search . '%')
+                ->orWhere('EmployeeID','LIKE', '%' . $Search . '%')
+                ->orWhere('FirstName','LIKE', '%' . $Search . '%')
+                ->orWhere('LastName','LIKE', '%' . $Search . '%')
+                ->paginate(10);
+ 
+        return view('users.staffleavebalance',['users'=>$users]);
+            }else{
+            $users = User::paginate(10);
+            
+            return view('users.staffleavebalance',['users'=>$users]);
+        }
+    }
+    }
+
+
     
     /**
      * Show the form for creating a new resource.
@@ -172,6 +194,21 @@ class UsersController extends Controller
     {
         return view('users.editpassword');
     }
+
+    public function editleavebalance($id)
+    {
+
+        $users  = User::find($id);
+        return view('users.editleavebalance',compact('users'));
+    }
+
+    public function editbulkleavebalance()
+    {
+        return view('users.editbulkleavebalance');
+    }
+    
+    
+
 
     /**
      * Update the specified resource in storage.
@@ -304,7 +341,53 @@ if ($user){
     }
     }
 
+    public function updateleavebalance(Request $request)
+    {
 
+        $validatedData = $request->validate([
+            'LeaveBalance' => 'required|integer',
+            ]);
+        $user=User::where('EmployeeID', $request->input('EmployeeID'))
+                              ->update([
+                                'LeaveBalance'=>$request->input('LeaveBalance'),
+                                'UpdatedBy'=>auth::user()->email,
+                                       ]);
+if ($user){
+
+    return back()->withinput()
+            ->with('success','Leave balance Updated Successfully');
+}
+
+        //redirect
+       // return back()->withinput();
+       return back()->withinput()->with('errors','Error Updating Profile');
+    }
+
+    public function updatebulkleavebalance(Request $request)
+    {
+
+        $validatedData = $request->validate([
+            'Days' => 'required|integer',
+            ]);
+        $user=User::where('id', '1')
+                              ->update([
+                                'LeaveBalance'=>'25',
+                                'UpdatedBy'=>auth::user()->email,
+                        ]);
+if ($user){
+
+    return back()->withinput()
+            ->with('success','Leave balance for all staff Updated Successfully');
+}
+
+        //redirect
+       // return back()->withinput();
+       return back()->withinput()->with('errors','Error Updating Profile');
+    }
+
+
+
+    
     /**
      * Remove the specified resource from storage.
      *

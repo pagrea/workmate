@@ -30,15 +30,21 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('createstaffaddresses','UsersController@createstaffaddresses')->name('user.createstaffaddresses');
     Route::get('createleavebalance','UsersController@createleavebalance')->name('user.createleavebalance');
     Route::get('staffleavebalance','UsersController@staffleavebalance')->name('user.staffleavebalance');
-    Route::get('editleavebalance/{EmployeeID}','UsersController@editleavebalance')->name('user.editleavebalance');
+    Route::get('editleavebalance/{id}','UsersController@editleavebalance')->name('user.editleavebalance');
     Route::post('updateleavebalance','UsersController@updateleavebalance')->name('user.updateleavebalance');
     Route::get('editprofile','UsersController@editprofile');
+    Route::get('editbulkleavebalance','UsersController@editbulkleavebalance')->name('user.editbulkleavebalance');
+    Route::get('updatebulkleavebalance','UsersController@updatebulkleavebalance')->name('user.updatebulkleavebalance');
+
+    
+
+
     Route::resource('departments', 'DepartmentController');
+
     Route::resource('leaverequests', 'LeaverequestController');
     Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval')->name('leaverequests.substituteleaveapproval');
     Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval')->name('leaverequests.hodleaveapproval');
     Route::get('hrleaveapproval','LeaverequestController@hrleaveapproval')->name('leaverequests.hrleaveapproval');
-
     Route::get('personalleavehistoryexport','LeaverequestController@personalleavehistoryexport');
     Route::get('Exportdepartmentalleavehistory','LeaverequestController@Exportdepartmentalleavehistory');
     Route::get('ExportAllstaffsleavehistory','LeaverequestController@ExportAllstaffsleavehistory');
