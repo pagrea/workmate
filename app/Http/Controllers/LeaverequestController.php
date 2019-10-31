@@ -320,14 +320,6 @@ class LeaverequestController extends Controller
                      'user_id'=>auth::user()->id
                      ]);
 
-        if($apply){
-
-
-<<<<<<< HEAD
-                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');
-=======
-                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');;
->>>>>>> 926710bcfcf3d0ae2f3cf67c1e0dfa32e95c9d02
                      if($apply){
                          $substitute = User::where('EmployeeID', 'LIKE', $request->input('Substitute'))->first();
                          $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
@@ -338,22 +330,12 @@ class LeaverequestController extends Controller
                         Notification::route('mail', $substituteEmail)
                             ->notify(new LeaveApprovalRequestReceived($requesterName, $substituteName));
 
-<<<<<<< HEAD
-                        return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');
-=======
                         return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');;
 
->>>>>>> 926710bcfcf3d0ae2f3cf67c1e0dfa32e95c9d02
-
-        }else{
-            return back()->withinput()->with('errors','Error Occured, Probably this user exist');
-        }
+                        }else{
+                            return back()->withinput()->with('errors','Error Occured, Probably this user exist');
+                        }   
     }
-<<<<<<< HEAD
-  }
-=======
-    }
->>>>>>> 926710bcfcf3d0ae2f3cf67c1e0dfa32e95c9d02
 }
 
     /**
