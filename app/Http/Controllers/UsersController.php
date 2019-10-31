@@ -366,14 +366,28 @@ if ($user){
     public function updatebulkleavebalance(Request $request)
     {
 
+        $TypeofUpdate=$request->input('TypeofUpdate');
+        $Days=$request->input('Days');
+
         $validatedData = $request->validate([
             'Days' => 'required|integer',
             ]);
-        $user=User::where('id', '1')
+
+            $users = User::all();
+
+            foreach($users as $user){
+                if ($TypeofUpdate == "Add"){
+                    $balance=$user->LeaveBalance + $Days;
+                }else{
+                    $balance=$user->LeaveBalance - $Days;
+                }
+                        $user=User::where('id', $user->id)
                               ->update([
-                                'LeaveBalance'=>'25',
+                                'LeaveBalance'=>$balance,
                                 'UpdatedBy'=>auth::user()->email,
                         ]);
+        }
+
 if ($user){
 
     return back()->withinput()
