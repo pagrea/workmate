@@ -11,6 +11,7 @@ use App\Department;
 use App\Leaverequest;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\LeaveApprovalRequestReceived;
+use App\Notifications\DepartmentalLeaveApprovalRequestReceived;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -245,8 +246,7 @@ class LeaverequestController extends Controller
         if($apply){
 
 
-                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');;
-=======
+                return redirect()->route('leaverequests.index')->with('success','Your Request has been submitted successful, It is waiting for a substitute to approve. Please Do not proceed with a leave until you obtain HR approval.');
                      if($apply){
                          $substitute = User::where('EmployeeID', 'LIKE', $request->input('Substitute'))->first();
                          $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
@@ -257,14 +257,14 @@ class LeaverequestController extends Controller
                         Notification::route('mail', $substituteEmail)
                             ->notify(new LeaveApprovalRequestReceived($requesterName, $substituteName));
 
-                        return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');;
->>>>>>> 1bb7d49095256aee6a8e98d772e54b616217e9e9
+                        return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');
 
         }else{
             return back()->withinput()->with('errors','Error Occured, Probably this user exist');
         }
     }
-    }
+  }
+}
 
     /**
      * Display the specified resource.
@@ -321,6 +321,14 @@ class LeaverequestController extends Controller
                  ]);
 
 if ($Leaverequests){
+    $updatedLeaveRequest = Leaverequest::findOrFail($id);
+    $applicantEmpId = $updatedLeaveRequest->EmployeeID;
+    $applicantDept = User::where('EmployeeID', 'LIKE', $applicantEmpId)->pluck('Department');
+    $hodEmails = User::role('Hod')->where('Department', 'LIKE', $applicantDept)->pluck('email');
+
+    Notification::route('mail', $hodEmails)
+      ->notify(new DepartmentalLeaveApprovalRequestReceived());
+
 return redirect()->route('leaverequests.substituteleaveapproval')->with('success','You have accepted to be a subsitute and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating');
