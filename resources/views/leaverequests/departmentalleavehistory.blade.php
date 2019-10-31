@@ -10,14 +10,18 @@
   <form action="/departmentalleavehistory" method="get">
   <H3 align="center"><b>Departmental Leave Hstory</b></H3>
     {{ csrf_field() }}
-    <div class="input-group">
-        <input type="text" class="form-control"  name="Search"
-            placeholder="Search"> <span class="input-group-btn">
-            <button type="submit" class="btn btn-default" name="find">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </span>
-    </div>
+    <table class="table table-bordered" >
+<thead>
+  <tr>
+    <th> <input type="checkbox" class="" name="check1" value="check1">Search by any Category<br>
+   <input type="text" class=""  name="Search" placeholder="Search by any Category"> &nbsp;</th>
+ <th> <input type="checkbox" class="" name="check2" value="check2">Search By Start date and End date <br>
+ StartDate<input type="date" class=""  name="start_date" placeholder="Start date"> &nbsp;
+ EndDate<input type="date" class=""  name="end_date" placeholder="End date"> &nbsp;
+ <input type="submit" class="btn btn-primary"  name="send" value="Search"></th>
+  </tr>
+  </thead>
+</table>
 </form>
 
 <table class="table table-bordered table-striped" >
