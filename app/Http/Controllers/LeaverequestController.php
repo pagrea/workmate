@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\LeaveApprovalRequestReceived;
 use App\Notifications\DepartmentalLeaveApprovalRequestReceived;
 use App\Notifications\LeaveApprovalRequestDeclinedBySubstitute;
+use App\Notifications\HRLeaveApprovalRequestReceived;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -501,6 +502,12 @@ return back()->withinput()->with('errors','Error Updating');
               ]);
 
 if ($Leaverequests){
+    $hrEmails = User::role('HR')->pluck('email');
+
+    //Send Email to HR
+    Notification::route('mail', $hrEmails)
+      ->notify(new HRLeaveApprovalRequestReceived());
+      
 return redirect()->route('leaverequests.hodleaveapproval')->with('success','You have approved the leave as HOD and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating');
