@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Adldap\Laravel\Facades\Adldap;
 class LoginController extends Controller
 {
     /*

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Adldap\Laravel\Facades\Adldap;
 class DepartmentController extends Controller
 {
     /**
@@ -87,8 +87,10 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         //
-        $departments  = Department::find($department->id);
+    
+       $departments  = Department::find($department->id);
         return view('departments.edit',['departments'=>$departments]);
+
     }
     /**
      * Update the specified resource in storage.
