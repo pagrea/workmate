@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\LeaveApprovalRequestReceived;
 use App\Notifications\DepartmentalLeaveApprovalRequestReceived;
 use App\Notifications\LeaveApprovalRequestDeclinedBySubstitute;
+use App\Notifications\HRLeaveApprovalRequestReceived;
+use App\Notifications\LeaveApprovalRequestDeniedByHOD;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -482,7 +484,7 @@ if ($Leaverequests){
     $substitute = User::where('EmployeeID', 'LIKE', $updatedLeaveRequest->Substitute)->first();
     $substituteName = $substitute->FirstName . ' ' . $substitute->LastName;
 
-    //Send Email notification to Applicant or Substitute Decline
+    //Send Email notification to Applicant for Substitute Decline
     Notification::route('mail', $applicantEmail)
      ->notify(new LeaveApprovalRequestDeclinedBySubstitute($substituteName, $applicantName));
      
@@ -501,6 +503,12 @@ return back()->withinput()->with('errors','Error Updating');
               ]);
 
 if ($Leaverequests){
+    $hrEmails = User::role('HR')->pluck('email');
+
+    //Send Email to HR
+    Notification::route('mail', $hrEmails)
+      ->notify(new HRLeaveApprovalRequestReceived());
+      
 return redirect()->route('leaverequests.hodleaveapproval')->with('success','You have approved the leave as HOD and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating');
@@ -517,6 +525,15 @@ public function hodDecline($id)
               ]);
 
 if ($Leaverequests){
+    $updatedLeaveRequest = Leaverequest::findOrFail($id);
+    $applicant = User::where('EmployeeID', 'LIKE', $updatedLeaveRequest->EmployeeID)->first();
+    $applicantEmail = $applicant->email;
+    $applicantName = $applicant->FirstName . ' ' . $applicant->LastName;
+
+    //Send Email to the applicant to alert HOD Decline
+    Notification::route('mail', $applicantEmail)
+     ->notify(new LeaveApprovalRequestDeniedByHOD($applicantName));
+
 return redirect()->route('leaverequests.hodleaveapproval')->with('success','You have Declined the leave as HOD and Record Saved successiful!');
 }
 return back()->withinput()->with('errors','Error Updating');
