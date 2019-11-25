@@ -133,9 +133,8 @@ return [
 
         'ldap' => [
 
-            'locate_users_by' => 'userprincipalname',
-
-            'bind_users_by' => 'distinguishedname',
+            'locate_users_by' => env('LDAP_USER_ATTRIBUTE', 'userprincipalname'),
+            'bind_users_by' => env('LDAP_USER_ATTRIBUTE', 'distinguishedname'),
 
         ],
 

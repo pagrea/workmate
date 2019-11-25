@@ -1,5 +1,9 @@
 @extends('adminlte::master')
 
+
+@include('partials.errors')
+@include('partials.success')
+
 @section('adminlte_css')
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/iCheck/square/blue.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
@@ -16,16 +20,16 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">{{ trans('adminlte::adminlte.login_message') }}</p>
-            <form action="{{ url(config('adminlte.login_url', 'login')) }}" method="post">
+            <form action="/login" method="post">
                 {!! csrf_field() !!}
 
-                <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
-                    <input type="text" name="email" class="form-control" value="{{ old('email') }}"
+                <div class="form-group has-feedback {{ $errors->has('username') ? 'has-error' : '' }}">
+                    <input type="text" name="username" class="form-control" value="{{ old('username') }}"
                            placeholder="{{ trans('adminlte::adminlte.email') }}">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    @if ($errors->has('email'))
+                    @if ($errors->has('username'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
+                            <strong>{{ $errors->first('username') }}</strong>
                         </span>
                     @endif
                 </div>

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'MedAl Local Data'),
+    'name' => env('APP_NAME', 'WorkMate'),
 
     /*
     |--------------------------------------------------------------------------

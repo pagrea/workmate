@@ -15,13 +15,14 @@ Route::get('/', function () {
     return view('auth.login'); 
 });
 
-Auth::routes();
+//Auth::routes();
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => ['disablepreventback','auth']],function(){
-
-    Route::resource('medicalcase', 'MedicalCaseController');
-    Route::get('/home', 'HomeController@index')->name('home');
-    
+    Route::get('/home', 'HomeController@index')->name('home'); 
     Route::resource('user','UsersController');
     Route::get('editprofile','UsersController@editprofile');
     Route::get('updateprofile','UsersController@updateprofile');
@@ -35,12 +36,7 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('editprofile','UsersController@editprofile');
     Route::get('editbulkleavebalance','UsersController@editbulkleavebalance')->name('user.editbulkleavebalance');
     Route::get('updatebulkleavebalance','UsersController@updatebulkleavebalance')->name('user.updatebulkleavebalance');
-
-    
-
-
     Route::resource('departments', 'DepartmentController');
-
     Route::resource('leaverequests', 'LeaverequestController');
     Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval')->name('leaverequests.substituteleaveapproval');
     Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval')->name('leaverequests.hodleaveapproval');
@@ -56,7 +52,6 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('hrDecline/{id}','LeaverequestController@hrDecline');
     Route::get('hodAccept/{id}','LeaverequestController@hodAccept');
     Route::get('hodDecline/{id}','LeaverequestController@hodDecline');
-
     Route::resource('roles', 'RolesController');
     Route::get('sendemail','LeaverequestController@sendemail');
 

@@ -36,6 +36,7 @@ class User extends Authenticatable
         'AbsorbedInNIMR',
         'UserRole',
         'email',
+        'username',
         'OtherEmail',
         'PhoneNumber',
         'EmegencyContantPerson',

@@ -127,7 +127,7 @@ return [
                 |
                 */
 
-                'account_suffix' => env('LDAP_ACCOUNT_SUFFIX', ''),
+                'account_suffix' => env('LDAP_ACCOUNT_SUFFIX', '@mbeya.mmrp.org'),
 
                 /*
                 |--------------------------------------------------------------------------
@@ -198,7 +198,7 @@ return [
                 |
                 */
 
-                'username' => env('LDAP_USERNAME', 'workmate@nimr-mmrc.org'),
+                'username' => env('LDAP_USERNAME', 'workmate'),
                 'password' => env('LDAP_PASSWORD', 'M0rog0ro'),
 
                 /*
