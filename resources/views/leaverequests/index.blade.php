@@ -14,14 +14,15 @@
     {{ csrf_field() }}
     <table class="table table-bordered" >
 <thead>
-  <tr>
-    <th> <input type="checkbox" class="" name="check1" value="check1">Search by any Category<br>
-   <input type="text" class=""  name="Search" placeholder="Search by any Category" value="{{ old('Search') }}"> &nbsp;</th>
- <th> <input type="checkbox" class="" name="check2" value="check2">Search By Start date and End date <br>
- StartDate<input type="date" class=""  name="start_date" value="{{ old('start_date') }}"> &nbsp;
- EndDate<input type="date" class=""  name="end_date" value="{{ old('end_date') }}"> &nbsp;
- <input type="submit" class="btn btn-primary"  name="send" value="Search"></th>
+<tr>
+  
+  <th> Staff Name <input type="text" class=""  name="Search" placeholder="Search by Staff Name" value="{{ old('Search') }}"> </th>
+ <th> 
+ StartDate&nbsp;<input type="date" class=""  name="start_date" value="{{ old('start_date') }}">&nbsp;&nbsp;
+ EndDate <input type="date" class=""  name="end_date" value="{{ old('end_date') }}">&nbsp;&nbsp;&nbsp;
+ <input type="submit" class="btn btn-primary"  name="send" value="Search"> &nbsp;</th>
   </tr>
+ 
   </thead>
 </table>
 </form>

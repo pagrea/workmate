@@ -13,7 +13,7 @@
     <table class="table table-bordered" >
 <thead>
   <tr>
-    <th> <input type="checkbox" class="" name="check1" value="check1">Search by Name<br>
+    <th>Staff Name 
                               <select name="Search" />
                                   <option value="{{ old('Search') }}">{{ old('Search') }}</option>
                                   @foreach($staffNames as $staffName)
@@ -21,7 +21,7 @@
                                     @endforeach
                              </select>
 
- <th> <input type="checkbox" class="" name="check2" value="check2">Search By Start date and End date <br>
+ <th>
  StartDate<input type="date" class=""  name="start_date" value="{{ old('start_date') }}"> &nbsp;
  EndDate<input type="date" class=""  name="end_date" value="{{ old('end_date') }}"> &nbsp;
  <input type="submit" class="btn btn-primary"  name="send" value="Search"></th>
