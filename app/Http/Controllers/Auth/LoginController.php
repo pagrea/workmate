@@ -33,7 +33,6 @@ class LoginController extends Controller
 
     protected function login(Request $request)
     {
-<<<<<<< HEAD
         $username = $request->input('username1');
         $password = $request->input('password');
         $user = User::where('username', $username)->first();
@@ -42,18 +41,6 @@ class LoginController extends Controller
                 return back()->withinput()->with('success','Your Information does not exist in HR Database');
             }
         if(Adldap::auth()->attempt($username, $password, $bindAsUser = true)) {
-=======
-        $username = $request->input('username');
-        $password = $request->input('password');
-
-        if(Adldap::auth()->attempt($username, $password, $bindAsUser = true)) {
-        
-            $user = User::where('username', $username)->first();
-            if (!$user) {
-               
-                return back()->withinput()->with('success','Your Information does not exist in HR Database');
-            }
->>>>>>> 93f07bfdcf41c8023e8fbc7dc4850ba52cf46ee4
 
            $this->guard()->login($user, true);
 

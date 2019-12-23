@@ -17,17 +17,9 @@ Route::get('/', function () {
 
 //Auth::routes();
 
-<<<<<<< HEAD
-
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-Route::get('logout', 'Auth\LoginController@logout');
-=======
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
->>>>>>> 93f07bfdcf41c8023e8fbc7dc4850ba52cf46ee4
 
 Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('/home', 'HomeController@index')->name('home'); 
