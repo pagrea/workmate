@@ -1,0 +1,13 @@
+{
+    "medical_case":{
+    "status": "test",
+    "createdDate": "2019.01.01",
+    "id": 2,
+    "patient": {
+    	"birthdate":"2019.01.01",
+    	"firstname": "Peter",
+    	"lastname": "Agrea",
+    	"gender": "Male"
+    }
+    }
+  }
