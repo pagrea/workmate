@@ -65,7 +65,7 @@ class LeaverequestController extends Controller
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
             ->where('leaverequests.StartDate','>=', $startDate)
             ->where('leaverequests.StartDate','<=', $endDate)
-            ->orderBy('Leaverequests.id', 'DESC')
+            ->orderBy('leaverequests.id', 'DESC')
             ->paginate(10);
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
         }
@@ -80,16 +80,16 @@ class LeaverequestController extends Controller
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->where('leaverequests.StartDate','>=', $startDate)
                 ->where('leaverequests.StartDate','<=', $endDate)
-                ->where('Leaverequests.TypeOfLeave','LIKE', '%' . $Search . '%')
-                ->orderBy('Leaverequests.id', 'DESC')
+                ->where('leaverequests.TypeOfLeave','LIKE', '%' . $Search . '%')
+                ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(10);
                 return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             
             }else{
-                $leaverequest = \DB::table('Leaverequests')->
-                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.EmployeeID', auth::user()->EmployeeID)
-                ->orderBy('Leaverequests.id', 'DESC')
+                $leaverequest = \DB::table('leaverequests')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+                ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(10);
 
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
