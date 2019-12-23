@@ -7,6 +7,7 @@
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
   <form action="/user" method="get">
+  <a class="pull-left btn btn-primary " href="/user/create">Register New Staff</a><br>
   <H3 align="center"><b>Staff Information</b></H3>
     {{ csrf_field() }}
     <div class="input-group">
@@ -46,7 +47,7 @@
         <td>
         <a class="pull-center btn btn-primary btn-sm" href="#" role="button">View More</a>
         <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}/edit" role="button">Edit</a>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">Permision</a>
+       
         </td>
       </tr>
       @endforeach

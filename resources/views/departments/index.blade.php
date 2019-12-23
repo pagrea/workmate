@@ -7,6 +7,7 @@
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
   <form action="/departments" method="get">
+  <a class="pull-left btn btn-primary " href="/departments/create">Register New Departments</a><br>
   <H3 align="center"><b>Departments</b></H3>
     {{ csrf_field() }}
     <div class="input-group">

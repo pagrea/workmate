@@ -160,22 +160,10 @@ return [
                
 
                 [
-                    'text' => 'General Staff Information',
-                    'icon' => 'envelope',
-                    'submenu' => [
-                        [
-                            'text' => 'Staff List',
-                            'url'  => '/user',
-                            'icon' => 'th-list',
-                        ],
-                        [
-                            'text' => 'Register New Staff',
-                            'url'  => '/user/create',
-                            'icon' => 'plus',
-                        ],
-
+                    'text' => 'Staff List',
+                    'url'  => '/user',
+                    'icon' => 'th-list',
                 ],
-            ],
 
             [
                 'text' => 'Staff Leave Balance',
@@ -210,22 +198,10 @@ return [
 
 
                 [
-                    'text' => 'Departments',
-                    'icon' => 'file',
-                    'submenu' => [
-                      
-                [
                     'text' => 'Department List',
                     'url'  => '/departments',
                     'icon' => 'th-list',
-                ],
-                        [
-                            'text' => 'Add New Department',
-                            'url'  => '/departments/create',
-                            'icon' => 'plus',
-                        ],
-    
-                ],
+                     
             ],
     
 
