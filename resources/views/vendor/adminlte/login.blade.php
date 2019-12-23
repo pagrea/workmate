@@ -1,8 +1,15 @@
 @extends('adminlte::master')
 
 
-@include('partials.errors')
-@include('partials.success')
+@if (session()->has('success'))
+<div class="alert alert-dismissable alert-danger col-md-12 col-lg-12">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                 <span aria-hidden="true"> &times; </span>
+          </button>
+    <strong>{!! session()->get('success') !!} </strong>
+
+     </div>
+@endif
 
 @section('adminlte_css')
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/plugins/iCheck/square/blue.css') }}">

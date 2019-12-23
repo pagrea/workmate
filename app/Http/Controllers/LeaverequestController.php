@@ -326,7 +326,7 @@ class LeaverequestController extends Controller
     public function create()
     {
         //
-        $deptstaff = User::where('Department',auth::user()->Department)->get();
+        $deptstaff = User::where('Department',auth::user()->Department)->where('EmployeeID','!=',auth::user()->EmployeeID)->get();
         $user = User::find(auth::user()->id);
         return view('leaverequests.create')->with('deptstaff', $deptstaff)->with('User', $user);
     }
