@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+Route::get('logout', 'Auth\LoginController@logout');
 
 Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('/home', 'HomeController@index')->name('home'); 
