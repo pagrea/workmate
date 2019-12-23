@@ -77,10 +77,6 @@
                                     <li><a href="/editprofile">
                                         <i class="fa fa-fw fa-user"></i>
                                         <b>Edit My Details</b></a></li>
-
-                                        <li><a href="/editpassword">
-                                        <i class="fa fa-fw fa-lock"></i>
-                                       <b> Change Password</b></a></li>
                                     <!-- <li class="divider"></li> -->
                                 </ul>
                         </li>
