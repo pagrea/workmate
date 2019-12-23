@@ -52,7 +52,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'url' => env('APP_URL', 'http://workmate.mbeya.nimr-mmrc.org'),
+=======
+    'url' => env('APP_URL', 'http://localhost'),
+>>>>>>> 93f07bfdcf41c8023e8fbc7dc4850ba52cf46ee4
 
     'asset_url' => env('ASSET_URL', null),
 
