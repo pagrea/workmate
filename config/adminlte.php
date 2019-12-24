@@ -110,7 +110,7 @@ return [
     'menu' => [
 
         [
-            'text' => 'Head of Department',
+            'text' => 'Home',
             'url'  => '/home',
             'icon' => 'home', 
         ],
