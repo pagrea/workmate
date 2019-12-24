@@ -76,7 +76,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="/editprofile">
                                         <i class="fa fa-fw fa-user"></i>
-                                        <b>Edit My Details</b></a></li>
+                                        <b>My Details</b></a></li>
                                     <!-- <li class="divider"></li> -->
                                 </ul>
                         </li>

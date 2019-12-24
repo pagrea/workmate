@@ -186,8 +186,12 @@ class UsersController extends Controller
     public function editprofile(User $user)
     {
         //
+
+        $departments = Department::where('id','!=',0)->get();
         $User  = User::find(auth::user()->id);
-        return view('users.editprofile',['User'=>$User]);
+        $userRole = $User->roles->pluck('name','name')->all();
+        return view('users.editprofile')->with('departments', $departments)->with('User', $User)
+                                 ->with('userRole', $userRole);
     }
 
     public function editpassword(User $user)
