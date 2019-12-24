@@ -238,8 +238,8 @@ class UsersController extends Controller
             'Department' => 'required|string',
             'AbsorbedInNIMR' => 'required|string',
             'email' => 'required|email|string',
-            'PhoneNumber' => 'required|regex:/(0)[0-9]{9}/',
-            'EmegencyContactNumber' => 'required|regex:/(0)[0-9]{9}/',
+            //'PhoneNumber' => 'required|regex:/(0)[0-9]{9}/',
+            //'EmegencyContactNumber' => 'required|regex:/(0)[0-9]{9}/',
             'StaffHomeAddress' => 'required|string',
             'StaffCurrentAddress' => 'required|string',
             ]);
