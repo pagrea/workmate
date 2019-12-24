@@ -110,6 +110,13 @@ return [
     'menu' => [
 
         [
+            'text' => 'Head of Department',
+            'url'  => '/home',
+            'icon' => 'home', 
+        ],
+
+
+        [
             'text' => 'My Corner',
             'icon' => 'th-large', 
             'submenu' => [
