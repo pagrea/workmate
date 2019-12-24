@@ -47,7 +47,7 @@ class LeaverequestController extends Controller
                 ->orWhere('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->where('users.LastName','LIKE', '%' . $Search . '%')
 
-                ->orderBy('Leaverequests.id', 'DESC')
+                ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(10);
         return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             }
@@ -111,7 +111,7 @@ class LeaverequestController extends Controller
 
             $staffNames = \DB::table('leaverequests')->
             join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-            ->where('Leaverequests.DepartmentID', auth::user()->Department)
+            ->where('leaverequests.DepartmentID', auth::user()->Department)
             ->distinct()
             ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
             ->get();
@@ -120,8 +120,8 @@ class LeaverequestController extends Controller
                 $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->where('Leaverequests.DepartmentID', auth::user()->Department)
-                ->orderBy('Leaverequests.id', 'DESC')
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(50);
  
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
@@ -134,11 +134,11 @@ class LeaverequestController extends Controller
     
                 $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.DepartmentID', auth::user()->Department)
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->where('leaverequests.StartDate','>=', $startDate)
                 ->where('leaverequests.StartDate','<=', $endDate)
                 
-                ->orderBy('Leaverequests.EmployeeID', 'DESC')
+                ->orderBy('leaverequests.EmployeeID', 'DESC')
                 ->paginate(50);
                 return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
 
@@ -151,17 +151,17 @@ class LeaverequestController extends Controller
 
         $leaverequests = \DB::table('leaverequests')->
         join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-        ->where('Leaverequests.DepartmentID', auth::user()->Department)
+        ->where('leaverequests.DepartmentID', auth::user()->Department)
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
-        ->orderBy('Leaverequests.id', 'DESC')
+        ->orderBy('leaverequests.id', 'DESC')
         ->paginate(50);
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }else{
-                $leaverequests = \DB::table('Leaverequests')->
-                join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.DepartmentID', auth::user()->Department)
+                $leaverequests = \DB::table('leaverequests')->
+                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->orderBy('FirstName')
                 ->paginate(10);
                 return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
@@ -191,7 +191,7 @@ class LeaverequestController extends Controller
                 $leaverequests = \DB::table('leaverequests')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->orderBy('Leaverequests.id', 'DESC')
+                ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(50);
  
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -206,7 +206,7 @@ class LeaverequestController extends Controller
         join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
-        ->orderBy('Leaverequests.EmployeeID', 'DESC')
+        ->orderBy('leaverequests.EmployeeID', 'DESC')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
@@ -222,13 +222,13 @@ class LeaverequestController extends Controller
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
-        ->orderBy('Leaverequests.id', 'DESC')
+        ->orderBy('leaverequests.id', 'DESC')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
     }else{
-        $leaverequests = \DB::table('Leaverequests')->
-        join('users' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
+        $leaverequests = \DB::table('leaverequests')->
+        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->orderBy('FirstName')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -246,16 +246,16 @@ class LeaverequestController extends Controller
             if ($Search !=""){
                 $leaverequest = \DB::table('users')->
                 join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.Substitute', auth::user()->EmployeeID)
-                ->where('Leaverequests.RequestStatus', 'Pending Substitute Approval')
+                ->where('leaverequests.Substitute', auth::user()->EmployeeID)
+                ->where('leaverequests.RequestStatus', 'Pending Substitute Approval')
                 ->paginate(10);
  
         return view('leaverequests.substituteleaveapproval',['leaverequests'=>$leaverequest]);
             }else{
                 $leaverequest = \DB::table('users')->
-                join('leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.Substitute', auth::user()->EmployeeID)
-                ->where('Leaverequests.RequestStatus', 'Pending Substitute Approval')
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.Substitute', auth::user()->EmployeeID)
+                ->where('leaverequests.RequestStatus', 'Pending Substitute Approval')
                 ->paginate(10);
 
             return view('leaverequests.substituteleaveapproval',['leaverequests'=>$leaverequest]);
@@ -280,9 +280,9 @@ class LeaverequestController extends Controller
         return view('leaverequests.hodleaveapproval',['leaverequests'=>$leaverequest]);
             }else{
                 $leaverequest = \DB::table('users')->
-                join('leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.DepartmentID', auth::user()->Department)
-                ->where('Leaverequests.RequestStatus', 'Accepted by the substitute')
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
                 ->paginate(10);
 
             return view('leaverequests.hodleaveapproval',['leaverequests'=>$leaverequest]);
@@ -301,14 +301,14 @@ class LeaverequestController extends Controller
             if ($Search !=""){
                 $leaverequest = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.RequestStatus', 'Approved As Requested')
+                ->where('leaverequests.RequestStatus', 'Approved As Requested')
                 ->paginate(10);
  
         return view('leaverequests.hrleaveapproval',['leaverequests'=>$leaverequest]);
             }else{
                 $leaverequest = \DB::table('users')->
-                join('Leaverequests' , 'Leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->where('Leaverequests.RequestStatus', 'Approved As Requested')
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.RequestStatus', 'Approved As Requested')
                 ->paginate(10);
             return view('leaverequests.hrleaveapproval')->with('leaverequests', $leaverequest);
     

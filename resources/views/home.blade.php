@@ -7,5 +7,16 @@
 @stop
 
 @section('content')
-@include('partials.StatusBoxes')
+
+<div class="row">
+        @include('partials.userStatusBoxes')
+   
+    @hasanyrole('Hod|CD')
+        @include('partials.hodStatusBoxes')
+    @endhasanyrole 
+
+    @hasanyrole('HR')
+        @include('partials.hrStatusBoxes')
+    @endhasanyrole 
+</div>
 @stop

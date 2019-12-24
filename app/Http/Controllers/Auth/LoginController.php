@@ -33,7 +33,7 @@ class LoginController extends Controller
 
     protected function login(Request $request)
     {
-        $username = $request->input('username1');
+        $username = $request->input('username');
         $password = $request->input('password');
         $user = User::where('username', $username)->first();
           if (!$user) {
