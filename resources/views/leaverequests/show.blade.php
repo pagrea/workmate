@@ -4,6 +4,7 @@
 @include('partials.errors')
 @include('partials.success')
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
+      <a class="pull-left btn btn-primary" href="{{ url()->previous() }}" role="button">Back</a>&nbsp;&nbsp;
       @if ($leaverequests->RequestStatus == "Approved by HR")
     <a class="btn btn-primary" href="/exportpdf/{{$leaverequests->id}}" role="button">Export to PDF</a>
     @endif
