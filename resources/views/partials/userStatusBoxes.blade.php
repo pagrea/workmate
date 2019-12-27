@@ -12,7 +12,7 @@
       <div class="icon">
         <i class="fa fa-bar-chart"></i>
       </div>
-      <a href="#" class="small-box-footer">
+      <a href="/substituteleaveapproval" class="small-box-footer">
         View them <i class="fa fa-arrow-circle-right"></i>
       </a> 
     </div>
@@ -30,7 +30,7 @@
         <i class="fa fa-pie-chart"></i>
       </div>
        <a href="#" class="small-box-footer">
-        View them <i class="fa fa-arrow-circle-right"></i>
+                <i class="fa fa-arrow-circle-right"></i>
       </a> 
     </div>
   </div>

@@ -11,7 +11,7 @@
       <div class="icon">
         <i class="fa fa-bar-chart"></i>
       </div>
-      <a href="#" class="small-box-footer">
+      <a href="/hrleaveapproval" class="small-box-footer">
         View them <i class="fa fa-arrow-circle-right"></i>
       </a> 
     </div>
