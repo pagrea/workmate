@@ -63,7 +63,7 @@
                         type="submit" class="pull-center btn btn-primary btn-sm" 
                         role="button">Accept
                 </button>
-                <a onclick='return confirm("Are you sure You want to Decline?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/hrDecline/{{$leaverequest->id}}">Decline</a>
+                <a  class="pull-center btn btn-primary btn-sm" href="/hrDeclinefrm/{{$leaverequest->id}}">Decline</a>
 
                              </form>
                            

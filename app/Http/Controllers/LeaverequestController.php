@@ -39,8 +39,8 @@ class LeaverequestController extends Controller
 
             if ($Search !="" && $startDate =="" ){
 
-                $leaverequest = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->where('users.FirstName','LIKE', '%' . $Search . '%')
 
@@ -60,8 +60,8 @@ class LeaverequestController extends Controller
                 ]);
 
 
-            $leaverequest = \DB::table('leaverequests')->
-            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            $leaverequest = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
             ->where('leaverequests.StartDate','>=', $startDate)
             ->where('leaverequests.StartDate','<=', $endDate)
@@ -75,8 +75,8 @@ class LeaverequestController extends Controller
                     'end_date' => 'required|date|after:start_date',
                     ]);
 
-                $leaverequest = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->where('leaverequests.StartDate','>=', $startDate)
                 ->where('leaverequests.StartDate','<=', $endDate)
@@ -86,8 +86,8 @@ class LeaverequestController extends Controller
                 return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             
             }else{
-                $leaverequest = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
                 ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(10);
@@ -109,16 +109,16 @@ class LeaverequestController extends Controller
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
 
-            $staffNames = \DB::table('leaverequests')->
-            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            $staffNames = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.DepartmentID', auth::user()->Department)
             ->distinct()
             ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
             ->get();
 
             if ($Search !="" && $startDate =="" ){
-                $leaverequests = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequests = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->orderBy('leaverequests.id', 'DESC')
@@ -132,8 +132,8 @@ class LeaverequestController extends Controller
                     'end_date' => 'required|date|after:start_date',
                     ]);
     
-                $leaverequests = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequests = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->where('leaverequests.StartDate','>=', $startDate)
                 ->where('leaverequests.StartDate','<=', $endDate)
@@ -149,8 +149,8 @@ class LeaverequestController extends Controller
             'end_date' => 'required|date|after:start_date',
             ]);
 
-        $leaverequests = \DB::table('leaverequests')->
-        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        $leaverequests = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('leaverequests.DepartmentID', auth::user()->Department)
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
@@ -159,8 +159,8 @@ class LeaverequestController extends Controller
         ->paginate(50);
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }else{
-                $leaverequests = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequests = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->orderBy('FirstName')
                 ->paginate(10);
@@ -181,15 +181,15 @@ class LeaverequestController extends Controller
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
 
-            $staffNames = \DB::table('leaverequests')->
-            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            $staffNames = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->distinct()
             ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
             ->get();
 
             if ($Search !="" && $startDate =="" ){
-                $leaverequests = \DB::table('leaverequests')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                $leaverequests = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
                 ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(50);
@@ -202,8 +202,8 @@ class LeaverequestController extends Controller
             'end_date' => 'required|date|after:start_date',
             ]);
 
-        $leaverequests = \DB::table('leaverequests')->
-        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        $leaverequests = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->orderBy('leaverequests.EmployeeID', 'DESC')
@@ -217,8 +217,8 @@ class LeaverequestController extends Controller
             'end_date' => 'required|date|after:start_date',
             ]);
 
-        $leaverequests = \DB::table('leaverequests')->
-        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        $leaverequests = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
@@ -227,8 +227,8 @@ class LeaverequestController extends Controller
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
     }else{
-        $leaverequests = \DB::table('leaverequests')->
-        join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        $leaverequests = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->orderBy('FirstName')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -245,7 +245,7 @@ class LeaverequestController extends Controller
             $Search = $request->input('Search');
             if ($Search !=""){
                 $leaverequest = \DB::table('users')->
-                join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.Substitute', auth::user()->EmployeeID)
                 ->where('leaverequests.RequestStatus', 'Pending Substitute Approval')
                 ->paginate(10);
@@ -316,7 +316,24 @@ class LeaverequestController extends Controller
     }
     }
 
+    public function hodDeclinefrm($id)
+    {
+        //
+        $leaverequest = Leaverequest::find($id);
+        $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
+        return view('leaverequests.hodDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
+    }
 
+    public function hrDeclinefrm($id)
+    {
+        //
+        $leaverequest = Leaverequest::find($id);
+        $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
+        return view('leaverequests.hrDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
+    }
+
+
+    
     
     /**
      * Show the form for creating a new resource.
@@ -398,9 +415,12 @@ class LeaverequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Leaverequest $leaverequest)
     {
-        //
+        $leaverequests  = Leaverequest::find($leaverequest->id);
+        $requestname=User::where('EmployeeID',$leaverequests->EmployeeID)->get();
+        $requestsubstitute=User::where('EmployeeID',$leaverequests->Substitute)->get();
+        return view('leaverequests.show',compact('leaverequests','requestname','requestsubstitute'));
     }
 
     /**
@@ -511,10 +531,15 @@ return back()->withinput()->with('errors','Error Updating');
 
 /*******************************HOD Approval Decline************************************ */
 
-public function hodDecline($id)
+public function hodDecline(Request $request, $id)
  {
      //
+     $validatedData = $request->validate([
+        'decline_reason' => 'required|string|max:500',
+        ]);
+
      $Leaverequests=Leaverequest::where('id',$id)->update([
+                 'decline_reason'=>$request->input('decline_reason'),
                  'RequestStatus'=>'Declined by HoD',
                  'UpdatedBy'=>auth::user()->email
               ]);
@@ -534,7 +559,7 @@ return redirect()->route('leaverequests.hodleaveapproval')->with('success','You 
 return back()->withinput()->with('errors','Error Updating');
 }
 
-/*******************************HOD Approval Accept************************************ */
+/*******************************HR Approval Accept************************************ */
 public function hrAccept(Request $request)
 {
     //
@@ -565,12 +590,17 @@ return back()->withinput()->with('errors','Error Updating');
 
 }
 
-/*******************************HOD Approval Decline************************************ */
+/*******************************HR Approval Decline************************************ */
 
-public function hrDecline($id)
+public function hrDecline(Request $request, $id)
 {
     //
+    $validatedData = $request->validate([
+        'decline_reason' => 'required|string|max:500',
+        ]);
+
     $Leaverequests=Leaverequest::where('id',$id)->update([
+                'decline_reason'=>$request->input('decline_reason'),
                 'RequestStatus'=>'Declined by HR',
                 'UpdatedBy'=>auth::user()->email
              ]);
@@ -618,6 +648,23 @@ public function sendemail()
     {
         return Excel::download(new AllstaffsleavehistoryExports, 'AllstaffsleavehistoryExports.xlsx');
     }
+
+
+    //********************************* Export to PDF********************************
+    public function exportpdf($id)
+{
+  // Fetch all customers from database
+  $leaverequests  = Leaverequest::find($id);
+  $requestname=User::where('EmployeeID',$leaverequests->EmployeeID)->get();
+  $requestsubstitute=User::where('EmployeeID',$leaverequests->Substitute)->get();
+  // Send data to the view using loadView function of PDF facade
+    $pdf = \PDF::loadView('leaverequests.expTopdf',compact('leaverequests','requestname','requestsubstitute'));
+
+  // Finally, you can download the file using download function
+    return $pdf->download('PDFExports.pdf');
+}
+//*********************************End Export to PDF ********************************
+    
 
     
     

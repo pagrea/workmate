@@ -50,10 +50,13 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('substituteAccept/{id}','LeaverequestController@substituteAccept');
     Route::get('substituteDecline/{id}','LeaverequestController@substituteDecline');
     Route::get('hrAccept','LeaverequestController@hrAccept');
-    Route::get('hrDecline/{id}','LeaverequestController@hrDecline');
+    Route::post('hrDecline/{id}','LeaverequestController@hrDecline');
     Route::get('hodAccept/{id}','LeaverequestController@hodAccept');
-    Route::get('hodDecline/{id}','LeaverequestController@hodDecline');
+    Route::post('hodDecline/{id}','LeaverequestController@hodDecline');
+    Route::get('hodDeclinefrm/{id}','LeaverequestController@hodDeclinefrm');
+    Route::get('hrDeclinefrm/{id}','LeaverequestController@hrDeclinefrm');
     Route::resource('roles', 'RolesController');
+    Route::get('exportpdf/{id}','LeaverequestController@exportpdf');
     Route::get('sendemail','LeaverequestController@sendemail');
 
     

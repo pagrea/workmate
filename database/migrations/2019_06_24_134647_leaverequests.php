@@ -27,6 +27,7 @@ class Leaverequests extends Migration
             $table->string('Substitute');
             $table->string('ContactTelephone');
             $table->string('RequestStatus');
+            $table->string('decline_reason');
             $table->integer('DaysApproved');
             $table->string('UpdatedBy');
             $table->timestamps();
