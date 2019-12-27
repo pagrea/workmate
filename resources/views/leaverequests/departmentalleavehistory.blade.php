@@ -40,6 +40,7 @@
     <th>EndDate</th>
     <th>TypeOfLeave</th>
     <th>RequestStatus</th>
+    <th>Action</th>
     
   </tr>
   </thead>
@@ -53,6 +54,9 @@
         <td>{{$leaverequest->EndDate}}</td>
         <td>{{$leaverequest->TypeOfLeave}}</td>
         <td>{{$leaverequest->RequestStatus}}</td>
+        <td>
+        <a class="pull-center btn btn-primary btn-sm" href="/leaverequests/{{$leaverequest->id}}" role="button">View More</a>
+        </td>
       </tr>
       @endforeach
   </tbody>
