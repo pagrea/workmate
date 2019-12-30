@@ -343,9 +343,12 @@ class LeaverequestController extends Controller
     public function create()
     {
         //
+
         $deptstaff = User::where('Department',auth::user()->Department)->where('EmployeeID','!=',auth::user()->EmployeeID)->get();
         $user = User::find(auth::user()->id);
         return view('leaverequests.create')->with('deptstaff', $deptstaff)->with('User', $user);
+
+    
     }
 
     /**
@@ -368,11 +371,23 @@ class LeaverequestController extends Controller
             $validatedData = $request->validate([
                 'ContactTelephone' => 'required|regex:/(0)[0-9]{9}/',
                 'StartDate' => 'required|date|before:EndDate',
-                'DaysRequested' => 'required|integer|lte:LeaveBalance|gte:'.$days,
+                'DaysRequested' => 'required|integer|lte:LeaveBalance|gte:1|gte:'.$days,
                 'EndDate' => 'required|date|after:StartDate',
                 'TypeOfLeave' => 'required|string|max:50',
                 'Substitute' => 'required|string|max:50',
                 ]);
+
+
+                $pendingRequest = Leaverequest::where('EmployeeID',auth::user()->EmployeeID)
+                ->Where('EndDate','>', $request->input('StartDate'))
+                ->where('RequestStatus','!=','Declined by the substitute')
+                ->where('RequestStatus','!=','Declined by HoD')
+                ->where('RequestStatus','!=','Declined by HR')
+                ->count();
+
+                if($pendingRequest > 0){
+                    return back()->withinput()->with('errors2','Error Occured, You have a pending Leave Request, Please check your leave history, or Contact IT team for help');
+                }else{
 
             $ID=$request->input('EmployeeID');
            $apply=Leaverequest::create([
@@ -404,8 +419,9 @@ class LeaverequestController extends Controller
                         return redirect()->route('leaverequests.index')->with('success','Your Request has been successfully submitted, It now awaits Substitute Approval. Please Do not leave until you receive HR approval.');;
 
                         }else{
-                            return back()->withinput()->with('errors','Error Occured, Probably this user exist');
+                            return back()->withinput()->with('errors','Error Occured, Probably this Record exist');
                         }   
+                    }
     }
 }
 
