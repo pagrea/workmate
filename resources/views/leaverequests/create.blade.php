@@ -4,6 +4,23 @@
       @include('partials.errors')
       @include('partials.success')
 
+      <head>
+    <script type="text/javascript">
+        function GetDays(){
+                var dropdt = new Date(document.getElementById("EndDate2").value);
+                var pickdt = new Date(document.getElementById("StartDate2").value);
+                return parseInt((dropdt - pickdt) / (24 * 3600 * 1000));
+        }
+
+        function cal(){
+        if(document.getElementById("EndDate2")){
+            document.getElementById("DaysRequested2").value=GetDays();
+        }  
+    }
+
+    </script>
+</head>
+
 <div class="col-md-9 col-lg-9 col-sm-9 pull-left" style="background: white;">
 <h3 align="center">Leave Request </h3>
 <!-- Example row of columns -->
@@ -128,12 +145,13 @@
                         <div class="form-group row">
                             <label for="StartDate" class="col-md-2 col-form-label text-md-right">Start Date<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
-                                <input id="StartDate" 
+                                <input id="StartDate2" 
                                        type="date" 
                                        class="form-control @error('StartDate') is-invalid @enderror" 
                                        name="StartDate" 
                                        value="{{ old('StartDate') }}" 
                                        required autocomplete="StartDate" 
+                                       onchange="cal()"
                                        autofocus >
                                 @error('StartDate')
                                     <span class="invalid-feedback alert-danger" role="alert">
@@ -146,12 +164,13 @@
                         <div class="form-group row">
                             <label for="EndDate" class="col-md-2 col-form-label text-md-right">Reporting Date<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
-                                <input id="EndDate" 
+                                <input id="EndDate2" 
                                        type="date" 
                                        class="form-control @error('EndDate') is-invalid @enderror" 
                                        name="EndDate" 
                                        value="{{ old('EndDate') }}" 
                                        required autocomplete="EndDate" 
+                                       onchange="cal()"
                                        autofocus >
                                 @error('EndDate')
                                     <span class="invalid-feedback alert-danger" role="alert">
@@ -164,11 +183,11 @@
                         <div class="form-group row">
                             <label for="DaysRequested" class="col-md-2 col-form-label text-md-right">Number of Days Requested<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
-                                <input id="DaysRequested" 
+                                <input id="DaysRequested2" 
                                        type="text" 
                                        class="form-control @error('DaysRequested') is-invalid @enderror" 
                                        name="DaysRequested" 
-                                       value="{{ old('DaysRequested') }}" 
+                                       readonly value="{{ old('DaysRequested') }}" 
                                        required autocomplete="DaysRequested" 
                                        autofocus >
                                 @error('DaysRequested')
