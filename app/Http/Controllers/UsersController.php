@@ -79,14 +79,23 @@ class UsersController extends Controller
             $Search = $request->input('Search');
             if ($Search !=""){
                 $users = User::where('id','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('FirstName','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('LastName','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+                
                 ->paginate(10);
  
         return view('users.staffleavebalance',['users'=>$users]);
             }else{
-            $users = User::paginate(10);
+            $users = User::where('Department','!=', 'Not Available')
+            ->paginate(10);
             
             return view('users.staffleavebalance',['users'=>$users]);
         }
