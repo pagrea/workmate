@@ -45,7 +45,7 @@
         <td>{{$user->Department}}</td>
         <td>{{$user->email}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="#" role="button">View More</a>
+        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}" role="button">View More</a>
         <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}/edit" role="button">Edit</a>
        
         </td>

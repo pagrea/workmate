@@ -2,7 +2,8 @@
 namespace App\Http\Controllers;
 use App\User;
 use App\Department;
-//use App\Http\Controllers\DB;
+use App\Dependant;
+
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,23 +26,47 @@ class UsersController extends Controller
             $Search = $request->input('Search');
             if ($Search !=""){
                 $users = User::where('id','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('FirstName','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('LastName','LIKE', '%' . $Search . '%')
-                ->orWhere('Dob','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+                
+                ->orWhere('highest_education_level','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('Gender','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('JobTitle','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('MaritalStatus','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('Nationality','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('NationalIDNum','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('UserRole','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->orWhere('email','LIKE', '%' . $Search . '%')
+                ->where('Department','!=', 'Not Available')
+
                 ->paginate(10);
  
         return view('users.index',['users'=>$users]);
             }else{
-            $users = User::paginate(10);
-            
+            $users = User::where('Department','!=', 'Not Available')
+            ->paginate(10);
             return view('users.index',['users'=>$users]);
         }
     }
@@ -79,6 +104,13 @@ class UsersController extends Controller
     {
        $departments = Department::where('id','!=',0)->get();
         return view('users.create')->with('departments', $departments);
+    }
+
+    public function createdependant($id)
+    {
+        //
+        $User  = User::find($id);
+        return view('users.createdependant')->with('User', $User);
     }
 
     /**
@@ -124,6 +156,7 @@ class UsersController extends Controller
                      'Dob'=>$request->input('Dob'),
                      'Gender'=>$request->input('Gender'),
                      'JobTitle'=>$request->input('JobTitle'),
+                     'highest_education_level'=>$request->input('highest_education_level'),
                      'DateOfEmployment'=>$request->input('DateOfEmployment'),
                      'DateOfLastPromotion'=>$request->input('DateOfLastPromotion'),
                      'MaritalStatus'=>$request->input('MaritalStatus'),
@@ -154,15 +187,51 @@ class UsersController extends Controller
     }
 }
 
+
+public function storedependant(Request $request)
+{
+
+     if (Auth::check()){
+
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer',
+            'name' => 'required|string',
+            'gender' => 'required|string',
+            'relationship' => 'required|string',
+            ]);
+
+        $id=$request->input('user_id');
+       $addusers=Dependant::create([
+                 'user_id'=>$request->input('user_id'),
+                 'name'=>$request->input('name'),
+                 'gender'=>$request->input('gender'),
+                 'relationship'=>$request->input('relationship'),
+                 'updated_by'=>auth::user()->email
+                 ]);
+
+                 if($addusers){
+            return redirect()->route('user.show',['user'=>$id])->with('success','Dependant Information has been saved Successfully');;
+
+    }else{
+        return back()->withinput()->with('errors','Error Occured, Probably this information exist');
+    }
+}
+}
+
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
         //
+        $User  = User::find($user->id);
+        $dependants  = Dependant::where('user_id',$User->id) ->orderBy('dependant_number', 'ASC')->get();
+        return view('users.show',compact('User','dependants'));
+
     }
 
     /**
@@ -183,21 +252,13 @@ class UsersController extends Controller
 
     }
 
-    public function editprofile(User $user)
+    public function editdependant($id)
     {
         //
-
-        $departments = Department::where('id','!=',0)->get();
-        $User  = User::find(auth::user()->id);
-        $userRole = $User->roles->pluck('name','name')->all();
-        return view('users.editprofile')->with('departments', $departments)->with('User', $User)
-                                 ->with('userRole', $userRole);
+        $User  = Dependant::find($id);
+        return view('users.editdependant')->with('User', $User);
     }
 
-    public function editpassword(User $user)
-    {
-        return view('users.editpassword');
-    }
 
     public function editleavebalance($id)
     {
@@ -244,36 +305,37 @@ class UsersController extends Controller
             'email' => 'required|email|string',
             //'PhoneNumber' => 'required|regex:/(0)[0-9]{9}/',
             //'EmegencyContactNumber' => 'required|regex:/(0)[0-9]{9}/',
-            'StaffHomeAddress' => 'required|string',
-            'StaffCurrentAddress' => 'required|string',
+            //'StaffHomeAddress' => 'required|string',
+            //'StaffCurrentAddress' => 'required|string',
             ]);
         $user=User::where('id', $User->id)
-                              ->update([
-                                'EmployeeID'=>$request->input('EmployeeID'),
-                                'FirstName'=>$request->input('FirstName'),
-                                'LastName'=>$request->input('LastName'),
-                                'Dob'=>$request->input('Dob'),
-                                'Gender'=>$request->input('Gender'),
-                                'JobTitle'=>$request->input('JobTitle'),
-                                'DateOfEmployment'=>$request->input('DateOfEmployment'),
-                                'DateOfLastPromotion'=>$request->input('DateOfLastPromotion'),
-                                'MaritalStatus'=>$request->input('MaritalStatus'),
-                                'LeaveBalance'=>$request->input('LeaveBalance'),
-                                'Nationality'=>$request->input('Nationality'),
-                                'NationalIDNum'=>$request->input('NationalIDNum'),
-                                'BirthCertificateNum'=>$request->input('BirthCertificateNum'),
-                                'CurrentStatus'=>$request->input('CurrentStatus'),
-                                'Department'=>$request->input('Department'),
-                                'AbsorbedInNIMR'=>$request->input('AbsorbedInNIMR'),
-                                'email'=>$request->input('email'),
-                                'OtherEmail'=>$request->input('OtherEmail'),
-                                'PhoneNumber'=>$request->input('PhoneNumber'),
-                                'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
-                                'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
-                                'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
-                                'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
-                                'UpdatedBy'=>auth::user()->email
-                                       ]);
+                ->update([
+                'EmployeeID'=>$request->input('EmployeeID'),
+                'FirstName'=>$request->input('FirstName'),
+                'LastName'=>$request->input('LastName'),
+                'Dob'=>$request->input('Dob'),
+                'Gender'=>$request->input('Gender'),
+                'JobTitle'=>$request->input('JobTitle'),
+                'highest_education_level'=>$request->input('highest_education_level'),
+                'DateOfEmployment'=>$request->input('DateOfEmployment'),
+                'DateOfLastPromotion'=>$request->input('DateOfLastPromotion'),
+                'MaritalStatus'=>$request->input('MaritalStatus'),
+                'LeaveBalance'=>$request->input('LeaveBalance'),
+                'Nationality'=>$request->input('Nationality'),
+                'NationalIDNum'=>$request->input('NationalIDNum'),
+                'BirthCertificateNum'=>$request->input('BirthCertificateNum'),
+                'CurrentStatus'=>$request->input('CurrentStatus'),
+                'Department'=>$request->input('Department'),
+                'AbsorbedInNIMR'=>$request->input('AbsorbedInNIMR'),
+                'email'=>$request->input('email'),
+                'OtherEmail'=>$request->input('OtherEmail'),
+                'PhoneNumber'=>$request->input('PhoneNumber'),
+                'EmegencyContantPerson'=>$request->input('EmegencyContantPerson'),
+                'EmegencyContactNumber'=>$request->input('EmegencyContactNumber'),
+                'StaffCurrentAddress'=>$request->input('StaffCurrentAddress'),
+                'StaffHomeAddress'=>$request->input('StaffHomeAddress'),
+                'UpdatedBy'=>auth::user()->email
+                        ]);
 
         //Update the User's role
         $updatedUser = User::find($User->id);
@@ -291,59 +353,6 @@ if ($user && $updateRoles){
        return back()->withinput()->with('errors','Error Updating');
     }
 
-/******************************  Update Profile************************************************ */
-    public function updateprofile(Request $request)
-    {
-        $user=User::where('id', auth::user()->id)
-                              ->update([
-                                'first_name'=>$request->input('first_name'),
-                                'last_name'=>$request->input('last_name'),
-                                'facility_name'=>$request->input('facility_name'),
-                                'profession'=>$request->input('profession'),
-                                'email'=>$request->input('email'),
-                                'UpdatedBy'=>auth::user()->email,
-                                       ]);
-if ($user){
-
-    return back()->withinput()
-            ->with('success','Profile Updated Successfully');
-}
-
-        //redirect
-       // return back()->withinput();
-       return back()->withinput()->with('errors','Error Updating Profile');
-    }
-
-
-/******************************  Update Password************************************************ */
-    public function updatepassword(Request $request)
-    {
-       //if ( Hash::make($request->input('oldpassword')) != auth::user()->password){   
-
-        if (!Hash::check($request->input('oldpassword'), auth::user()->password)) {
-            return back()->withinput()->with('errors','Unable to Change Password Old Password is not Correct');
-
-       } elseif ($request->input('password') != $request->input('password_confirmation')){
-        return back()->withinput()->with('errors','Unable to Change Password, Password Mis Match');
-       }else{
-
-
-        $user=User::where('id', auth::user()->id)
-                              ->update([
-                                'password'=>Hash::make($request->input('password')),
-                                'UpdatedBy'=>auth::user()->email,
-                                       ]);
-if ($user){
-
-    return back()->withinput()
-            ->with('success','Password Updated Successfully, Please Logout to Use your New Password');
-}
-
-        //redirect
-       // return back()->withinput();
-       return back()->withinput()->with('errors','Error Updating Password');
-    }
-    }
 
     public function updateleavebalance(Request $request)
     {
@@ -412,6 +421,32 @@ if ($user){
        return back()->withinput()->with('errors','Error Updating Profile');
     }
 
+    public function updatedependant(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required|integer',
+            'name' => 'required|string',
+            'gender' => 'required|string',
+            'relationship' => 'required|string',
+            ]);
+
+        $id=$request->input('user_id');
+        $editdependant=Dependant::where('id', $request->input('id'))
+                              ->update([
+                 'user_id'=>$request->input('user_id'),
+                 'name'=>$request->input('name'),
+                 'gender'=>$request->input('gender'),
+                 'relationship'=>$request->input('relationship'),
+                 'updated_by'=>auth::user()->email
+                 ]);
+
+                 if($editdependant){
+            return redirect()->route('user.show',['user'=>$id])->with('success','Dependant Information has been saved Successfully');
+}
+
+       return back()->withinput()->with('errors','Error Updating Dependant');
+    }
+
 
 
     
@@ -425,4 +460,19 @@ if ($user){
     {
         //
     }
+
+
+    public function userexportpdf($id)
+    {
+      // Fetch all customers from database
+      $User  = User::find($id);
+      $dependants  = Dependant::where('user_id',$User->id) ->orderBy('dependant_number', 'ASC')->get();
+      // Send data to the view using loadView function of PDF facade
+        $pdf = \PDF::loadView('users.expTopdf',compact('User','dependants'));
+    
+      // Finally, you can download the file using download function
+        return $pdf->download('PDFExports.pdf');
+    }
+    //*********************************End Export to PDF ********************************
+
 }

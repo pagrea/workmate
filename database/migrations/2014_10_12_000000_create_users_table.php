@@ -21,7 +21,8 @@ class CreateUsersTable extends Migration
                 $table->string('LastName')->nullable();
                 $table->date('Dob')->nullable();
                 $table->string('Gender')->nullable();
-                $table->string('JobTitle')->unique();
+                $table->string('JobTitle')->nullable();
+                $table->string('highest_education_level')->nullable();
                 $table->date('DateOfEmployment')->nullable();
                 $table->date('DateOfLastPromotion');
                 $table->string('MaritalStatus')->nullable();
@@ -31,7 +32,7 @@ class CreateUsersTable extends Migration
                 $table->string('BirthCertificateNum')->nullable();
                 $table->string('CurrentStatus')->nullable();
                 $table->string('Department')->nullable();
-                $table->string('AbsorbedInNIMR')->unique();
+                $table->string('AbsorbedInNIMR')->nullable();
                 $table->string('UserRole')->nullable();
                 $table->string('email')->unique();
                 $table->string('OtherEmail')->nullable();

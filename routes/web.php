@@ -35,6 +35,13 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::get('editleavebalance/{id}','UsersController@editleavebalance')->name('user.editleavebalance');
     Route::post('updateleavebalance','UsersController@updateleavebalance')->name('user.updateleavebalance');
     Route::get('editprofile','UsersController@editprofile');
+
+    Route::get('createdependant/{id}','UsersController@createdependant');
+    Route::get('editdependant/{id}','UsersController@editdependant');
+    Route::post('storedependant','UsersController@storedependant');
+    Route::post('updatedependant','UsersController@updatedependant');
+    Route::get('userexportpdf/{id}','UsersController@userexportpdf');
+
     Route::get('editbulkleavebalance','UsersController@editbulkleavebalance')->name('user.editbulkleavebalance');
     Route::get('updatebulkleavebalance','UsersController@updatebulkleavebalance')->name('user.updatebulkleavebalance');
     Route::resource('departments', 'DepartmentController');

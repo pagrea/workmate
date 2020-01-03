@@ -120,6 +120,31 @@
                             </div>
                         </div>
 
+                        
+                        <div class="form-group row">
+                            <label for="highest_education_level" class="col-md-2 col-form-label text-md-right">Highest Education Level</label>
+                            <div class="col-md-6">
+                            <select id="highest_education_level" name="highest_education_level" class="form-control @error('highest_education_level') is-invalid @enderror"/>
+                            <option value="{{$User->highest_education_level}}" selected>{{$User->highest_education_level}}</option>
+                                       <option value="Doctor of Philosophy(PhD)">Doctor of Philosophy(PhD)</option>
+                                       <option value="Masters">Masters</option>
+                                       <option value="Postgraduate Diploma">Postgraduate Diploma</option>
+                                       <option value="Bachelor">Bachelor</option>
+                                       <option value="Diploma">Advanced Diploma</option>
+                                       <option value="Diploma">Diploma</option>
+                                       <option value="Certificate">Certificate</option>
+                                       <option value="Certificate of Secondary Education">Advanced Certificate of Secondary Education</option>
+                                       <option value="Separated">Certificate of Secondary Education</option>
+                                       <option value="Primary Education">Primary Education</option>
+                                       </select>
+                                       @error('highest_education_level')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="DateOfEmployment" class="col-md-2 col-form-label text-md-right">Date Of Employment<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
