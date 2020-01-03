@@ -119,8 +119,9 @@ class LeaverequestController extends Controller
             if ($Search !="" && $startDate =="" ){
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->where('users.Department','!=', 'Not Available')
                 ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(50);
  
@@ -137,7 +138,7 @@ class LeaverequestController extends Controller
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->where('leaverequests.StartDate','>=', $startDate)
                 ->where('leaverequests.StartDate','<=', $endDate)
-                
+                ->where('users.Department','!=', 'Not Available')
                 ->orderBy('leaverequests.EmployeeID', 'DESC')
                 ->paginate(50);
                 return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
@@ -155,6 +156,7 @@ class LeaverequestController extends Controller
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
+        ->where('users.Department','!=', 'Not Available')
         ->orderBy('leaverequests.id', 'DESC')
         ->paginate(50);
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
@@ -162,6 +164,7 @@ class LeaverequestController extends Controller
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
+                ->where('users.Department','!=', 'Not Available')
                 ->orderBy('FirstName')
                 ->paginate(10);
                 return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
@@ -190,7 +193,8 @@ class LeaverequestController extends Controller
             if ($Search !="" && $startDate =="" ){
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-                ->orWhere('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+                ->where('users.Department','!=', 'Not Available')
                 ->orderBy('leaverequests.id', 'DESC')
                 ->paginate(50);
  
@@ -206,6 +210,7 @@ class LeaverequestController extends Controller
         join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
+        ->where('users.Department','!=', 'Not Available')
         ->orderBy('leaverequests.EmployeeID', 'DESC')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -222,6 +227,7 @@ class LeaverequestController extends Controller
         ->where('leaverequests.StartDate','>=', $startDate)
         ->where('leaverequests.StartDate','<=', $endDate)
         ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
+        ->where('users.Department','!=', 'Not Available')
         ->orderBy('leaverequests.id', 'DESC')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -229,6 +235,7 @@ class LeaverequestController extends Controller
     }else{
         $leaverequests = \DB::table('users')->
         join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->where('users.Department','!=', 'Not Available')
         ->orderBy('FirstName')
         ->paginate(10);
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
@@ -344,7 +351,10 @@ class LeaverequestController extends Controller
     {
         //
 
-        $deptstaff = User::where('Department',auth::user()->Department)->where('EmployeeID','!=',auth::user()->EmployeeID)->get();
+        $deptstaff = User::where('Department',auth::user()->Department)
+        ->where('EmployeeID','!=',auth::user()->EmployeeID)
+        ->where('Department','!=', 'Not Available')
+        ->get();
         $user = User::find(auth::user()->id);
         return view('leaverequests.create')->with('deptstaff', $deptstaff)->with('User', $user);
 
