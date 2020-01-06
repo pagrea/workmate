@@ -15,13 +15,19 @@ class LeavehistoryExports implements FromCollection, WithHeadings, ShouldAutoSiz
     */
     public function collection()
     {
-        $Search2=\Session::get('Search1');
-        if ($Search2 ==""){
+        $Search2=\Session::get('search1');
+        $startDate2=\Session::get('startDate1');
+        $endDate2=\Session::get('endDate1');
 
-            $leaverequest = \DB::table('leaverequests')->
-            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
-            ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
-            ->orderBy('Leaverequests.id', 'DESC')
+       if ($Search2 !="" && $startDate2 =="" ){
+
+        $leaverequest = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+        ->where('users.FirstName','LIKE', '%' . $Search2 . '%')
+        ->orWhere('leaverequests.EmployeeID', auth::user()->EmployeeID)
+        ->where('users.LastName','LIKE', '%' . $Search2 . '%')
+        ->orderBy('leaverequests.id', 'DESC')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
@@ -33,13 +39,15 @@ class LeavehistoryExports implements FromCollection, WithHeadings, ShouldAutoSiz
                         'RequestStatus')
             ->get();
             return $leaverequest;
-        }else{
+        }
 
-
-            $leaverequest = \DB::table('leaverequests')->
-            join('users' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        elseif ($Search2 =="" && $startDate2 !="" ){
+            $leaverequest = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
-            ->orderBy('Leaverequests.id', 'DESC')
+            ->where('leaverequests.StartDate','>=', $startDate2)
+            ->where('leaverequests.StartDate','<=', $endDate2)
+            ->orderBy('leaverequests.id', 'DESC')
             ->select(   'leaverequests.id',
                         'leaverequests.EmployeeID',
                         'FirstName',
@@ -50,6 +58,43 @@ class LeavehistoryExports implements FromCollection, WithHeadings, ShouldAutoSiz
                         'TypeOfLeave',
                         'RequestStatus')
             ->get();
+                return $leaverequest;
+            }
+            elseif ($Search2 !="" && $startDate2 !="" ){
+                $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+                ->where('leaverequests.StartDate','>=', $startDate2)
+                ->where('leaverequests.StartDate','<=', $endDate2)
+                ->where('leaverequests.TypeOfLeave','LIKE', '%' . $Search2 . '%')
+                ->orderBy('leaverequests.id', 'DESC')
+                ->select(   'leaverequests.id',
+                            'leaverequests.EmployeeID',
+                            'FirstName',
+                            'LastName',
+                            'StartDate',
+                            'DaysApproved',
+                            'EndDate',
+                            'TypeOfLeave',
+                            'RequestStatus')
+                ->get();
+                return $leaverequest;
+        }else{
+
+            $leaverequest = \DB::table('users')->
+                join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
+                ->orderBy('leaverequests.id', 'DESC')
+                ->select(   'leaverequests.id',
+                            'leaverequests.EmployeeID',
+                            'FirstName',
+                            'LastName',
+                            'StartDate',
+                            'DaysApproved',
+                            'EndDate',
+                            'TypeOfLeave',
+                            'RequestStatus')
+                ->get();
             return $leaverequest;
     }
     }

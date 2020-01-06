@@ -38,6 +38,9 @@ class LeaverequestController extends Controller
             $endDate = $request->input('end_date');
 
             if ($Search !="" && $startDate =="" ){
+                \Session::put('search1', $Search);
+                \Session::put('startDate1', '');
+                \Session::put('endDate1', '');
 
                 $leaverequest = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
@@ -53,7 +56,11 @@ class LeaverequestController extends Controller
             }
 
             elseif ($Search =="" && $startDate !="" ){
-
+                \Session::put('startDate1', $startDate);
+                \Session::put('endDate1', $endDate);
+                \Session::put('search1', '');
+                
+                
             $validatedData = $request->validate([
                 'start_date' => 'required|date|before:end_date',
                 'end_date' => 'required|date|after:start_date',
@@ -70,6 +77,10 @@ class LeaverequestController extends Controller
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
         }
             elseif ($Search !="" && $startDate !="" ){
+                \Session::put('startDate1', $startDate);
+                \Session::put('endDate1', $endDate);
+                \Session::put('search1', $Search);
+
                 $validatedData = $request->validate([
                     'start_date' => 'required|date|before:end_date',
                     'end_date' => 'required|date|after:start_date',
@@ -86,6 +97,9 @@ class LeaverequestController extends Controller
                 return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             
             }else{
+                \Session::put('startDate1', '');
+                \Session::put('endDate1', '');
+                \Session::put('search1', '');
                 $leaverequest = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID', auth::user()->EmployeeID)
@@ -109,6 +123,8 @@ class LeaverequestController extends Controller
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
 
+           
+            
             $staffNames = \DB::table('users')->
             join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
             ->where('leaverequests.DepartmentID', auth::user()->Department)
@@ -117,6 +133,9 @@ class LeaverequestController extends Controller
             ->get();
 
             if ($Search !="" && $startDate =="" ){
+                \Session::put('startDate1', '');
+                \Session::put('endDate1', '');
+                \Session::put('search1', $Search);
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
@@ -128,6 +147,9 @@ class LeaverequestController extends Controller
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }
             elseif ($Search =="" && $startDate !="" ){
+                \Session::put('startDate1', $startDate);
+                \Session::put('endDate1', $endDate);
+                \Session::put('search1', '');
                 $validatedData = $request->validate([
                     'start_date' => 'required|date|before:end_date',
                     'end_date' => 'required|date|after:start_date',
@@ -145,6 +167,9 @@ class LeaverequestController extends Controller
 
     }
      elseif ($Search !="" && $startDate !="" ){
+        \Session::put('startDate1', $startDate);
+        \Session::put('endDate1', $endDate);
+        \Session::put('search1', $Search);
         $validatedData = $request->validate([
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
@@ -161,6 +186,11 @@ class LeaverequestController extends Controller
         ->paginate(50);
         return view('leaverequests.departmentalleavehistory',compact('leaverequests','staffNames'));
             }else{
+
+                \Session::put('startDate1', '');
+                \Session::put('endDate1', '');
+                \Session::put('search1', '');
+
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.DepartmentID', auth::user()->Department)
@@ -191,6 +221,9 @@ class LeaverequestController extends Controller
             ->get();
 
             if ($Search !="" && $startDate =="" ){
+                \Session::put('startDate1', '');
+                \Session::put('endDate1', '');
+                \Session::put('search1', $Search);
                 $leaverequests = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
@@ -201,6 +234,9 @@ class LeaverequestController extends Controller
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
     } elseif ($Search =="" && $startDate !="" ){
+        \Session::put('startDate1', $startDate);
+        \Session::put('endDate1', $endDate);
+        \Session::put('search1', '');
         $validatedData = $request->validate([
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
@@ -217,6 +253,10 @@ class LeaverequestController extends Controller
 
     }
     elseif ($Search !="" && $startDate !="" ){
+        \Session::put('startDate1', $startDate);
+        \Session::put('endDate1', $endDate);
+        \Session::put('search1', $Search);
+
         $validatedData = $request->validate([
             'start_date' => 'required|date|before:end_date',
             'end_date' => 'required|date|after:start_date',
@@ -233,6 +273,10 @@ class LeaverequestController extends Controller
         return view('leaverequests.employeeleavehistory',compact('leaverequests','staffNames'));
 
     }else{
+        \Session::put('startDate1', '');
+        \Session::put('endDate1', '');
+        \Session::put('search1', '');
+
         $leaverequests = \DB::table('users')->
         join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
         ->where('users.Department','!=', 'Not Available')
