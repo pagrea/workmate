@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Session;
 use App\User;
 use App\Department;
 use App\Dependant;
@@ -68,8 +69,7 @@ class UsersController extends Controller
         return view('users.index',['users'=>$users]);
             }else{
                 \Session::put('search1', '');
-            $users = User::where('Department','!=', 'Not Available')
-            ->paginate(10);
+            $users = User::where('Department','!=', 'Not Available') ->paginate(10);
             return view('users.index',['users'=>$users]);
         }
     }
@@ -490,7 +490,7 @@ if ($user){
 //*********************************Export to Excel ********************************
     public function Exportstaffdata() 
     {
-        return Excel::download(new StaffinfoExports, 'StaffinfoExports.xlsx');
+        return Excel::download(new StaffinfoExports, 'Staffinformation.xlsx');
     }
     //*********************************End Export to Excel ********************************
 

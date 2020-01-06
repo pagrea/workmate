@@ -1,8 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Session;
-
 namespace App\Exports;
-
 use App\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -15,7 +13,7 @@ class StaffinfoExports implements FromCollection, WithHeadings, ShouldAutoSize
     */
     public function collection()
     {
-        $Search2=\Session::get('Search1');
+        $Search2=\Session::get('search1');
         if ($Search2 !=""){
             $staffs =User::where('id','LIKE', '%' . $Search2 . '%')
             ->where('Department','!=', 'Not Available')
@@ -80,12 +78,12 @@ class StaffinfoExports implements FromCollection, WithHeadings, ShouldAutoSize
                         'StaffCurrentAddress',
                         'StaffHomeAddress',
                         'updated_at',
-                        'UpdatedBy',
+                        'UpdatedBy'
             )
             ->get();
             return $staffs;
         }else{
-            $staffs =User::where('Department','!=', 'Not Available')
+            $staffs1 =User::where('Department','!=', 'Not Available')
             ->orderBy('FirstName')
             ->select(   'id',
                         'EmployeeID',
@@ -114,10 +112,10 @@ class StaffinfoExports implements FromCollection, WithHeadings, ShouldAutoSize
                         'StaffCurrentAddress',
                         'StaffHomeAddress',
                         'updated_at',
-                        'UpdatedBy',
+                        'UpdatedBy'
                         )
             ->get();
-            return $staffs;
+            return $staffs1;
     }
     }
 
