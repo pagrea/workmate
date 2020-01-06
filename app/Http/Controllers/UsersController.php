@@ -3,7 +3,8 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Department;
 use App\Dependant;
-
+use App\Exports\StaffinfoExports;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class UsersController extends Controller
 
             $Search = $request->input('Search');
             if ($Search !=""){
+                \Session::put('search1', $Search);
                 $users = User::where('id','LIKE', '%' . $Search . '%')
                 ->where('Department','!=', 'Not Available')
 
@@ -55,16 +57,17 @@ class UsersController extends Controller
                 ->orWhere('NationalIDNum','LIKE', '%' . $Search . '%')
                 ->where('Department','!=', 'Not Available')
 
-                ->orWhere('UserRole','LIKE', '%' . $Search . '%')
+                ->orWhere('highest_education_level','LIKE', '%' . $Search . '%')
                 ->where('Department','!=', 'Not Available')
 
                 ->orWhere('email','LIKE', '%' . $Search . '%')
                 ->where('Department','!=', 'Not Available')
 
-                ->paginate(10);
+                ->paginate(50);
  
         return view('users.index',['users'=>$users]);
             }else{
+                \Session::put('search1', '');
             $users = User::where('Department','!=', 'Not Available')
             ->paginate(10);
             return view('users.index',['users'=>$users]);
@@ -89,7 +92,7 @@ class UsersController extends Controller
 
                 ->orWhere('LastName','LIKE', '%' . $Search . '%')
                 ->where('Department','!=', 'Not Available')
-                
+
                 ->paginate(10);
  
         return view('users.staffleavebalance',['users'=>$users]);
@@ -483,5 +486,12 @@ if ($user){
         return $pdf->download('PDFExports.pdf');
     }
     //*********************************End Export to PDF ********************************
+
+//*********************************Export to Excel ********************************
+    public function Exportstaffdata() 
+    {
+        return Excel::download(new StaffinfoExports, 'StaffinfoExports.xlsx');
+    }
+    //*********************************End Export to Excel ********************************
 
 }

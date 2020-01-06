@@ -8,6 +8,7 @@
   <div class="panel-body">
   <form action="/user" method="get">
   <a class="pull-left btn btn-primary " href="/user/create">Register New Staff</a><br>
+  <a class="pull-right btn btn-primary" href="/Exportstaffdata" role="button">Export to Excel</a>
   <H3 align="center"><b>Staff Information</b></H3>
     {{ csrf_field() }}
     <div class="input-group">
