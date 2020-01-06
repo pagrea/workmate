@@ -370,18 +370,22 @@ class LeaverequestController extends Controller
     public function hodDeclinefrm($id)
     {
         //
+        if (Auth::check()){
         $leaverequest = Leaverequest::find($id);
         $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
         return view('leaverequests.hodDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
     }
+}
 
     public function hrDeclinefrm($id)
     {
         //
+        if (Auth::check()){
         $leaverequest = Leaverequest::find($id);
         $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
         return view('leaverequests.hrDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
     }
+}
 
 
     
@@ -394,7 +398,7 @@ class LeaverequestController extends Controller
     public function create()
     {
         //
-
+        if (Auth::check()){
         $deptstaff = User::where('Department',auth::user()->Department)
         ->where('EmployeeID','!=',auth::user()->EmployeeID)
         ->where('Department','!=', 'Not Available')
@@ -402,7 +406,7 @@ class LeaverequestController extends Controller
         $user = User::find(auth::user()->id);
         return view('leaverequests.create')->with('deptstaff', $deptstaff)->with('User', $user);
 
-    
+        }
     }
 
     /**
@@ -487,11 +491,13 @@ class LeaverequestController extends Controller
      */
     public function show(Leaverequest $leaverequest)
     {
+        if (Auth::check()){
         $leaverequests  = Leaverequest::find($leaverequest->id);
         $requestname=User::where('EmployeeID',$leaverequests->EmployeeID)->get();
         $requestsubstitute=User::where('EmployeeID',$leaverequests->Substitute)->get();
         return view('leaverequests.show',compact('leaverequests','requestname','requestsubstitute'));
     }
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -531,6 +537,7 @@ class LeaverequestController extends Controller
     public function substituteAccept($id)
     {
         //
+        if (Auth::check()){
         $Leaverequests=Leaverequest::where('id',$id)->update([
                     'RequestStatus'=>'Accepted by the substitute',
                     'UpdatedBy'=>auth::user()->email
@@ -550,12 +557,14 @@ return redirect()->route('leaverequests.substituteleaveapproval')->with('success
 }
 return back()->withinput()->with('errors','Error Updating');
 }
+    }
 
 /*******************************Substitute Approval Decline************************************ */
 
 public function substituteDecline($id)
     {
         //
+        if (Auth::check()){
         $Leaverequests=Leaverequest::where('id',$id)->update([
                     'RequestStatus'=>'Declined by the substitute',
                     'UpdatedBy'=>auth::user()->email
@@ -577,11 +586,13 @@ return redirect()->route('leaverequests.substituteleaveapproval')->with('success
 }
 return back()->withinput()->with('errors','Error Updating');
 }
+}
 
  /*******************************HOD Approval Accept************************************ */
  public function hodAccept($id)
  {
      //
+     if (Auth::check()){
      $Leaverequests=Leaverequest::where('id',$id)->update([
                  'RequestStatus'=>'Approved As Requested',
                  'UpdatedBy'=>auth::user()->email
@@ -598,12 +609,14 @@ return redirect()->route('leaverequests.hodleaveapproval')->with('success','You 
 }
 return back()->withinput()->with('errors','Error Updating');
 }
+ }
 
 /*******************************HOD Approval Decline************************************ */
 
 public function hodDecline(Request $request, $id)
  {
      //
+     if (Auth::check()){
      $validatedData = $request->validate([
         'decline_reason' => 'required|string|max:500',
         ]);
@@ -628,12 +641,13 @@ return redirect()->route('leaverequests.hodleaveapproval')->with('success','You 
 }
 return back()->withinput()->with('errors','Error Updating');
 }
+ }
 
 /*******************************HR Approval Accept************************************ */
 public function hrAccept(Request $request)
 {
     //
-
+    if (Auth::check()){
     $DaysRequested =$request->input('DaysRequested');
     $TypeOfLeave =$request->input('TypeOfLeave');
     $id =$request->input('id');
@@ -659,12 +673,14 @@ return redirect()->route('leaverequests.hrleaveapproval')->with('success','You h
 return back()->withinput()->with('errors','Error Updating');
 
 }
+}
 
 /*******************************HR Approval Decline************************************ */
 
 public function hrDecline(Request $request, $id)
 {
     //
+    if (Auth::check()){
     $validatedData = $request->validate([
         'decline_reason' => 'required|string|max:500',
         ]);
@@ -681,6 +697,7 @@ return redirect()->route('leaverequests.hrleaveapproval')->with('success','You h
 }
 return back()->withinput()->with('errors','Error Updating, Please Contact IT to help on this');
 
+}
 }
 
 /****************************************************send email********************* */

@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-
+        if (Auth::check()){
         $pendingSubstituteApproval = Leaverequest::where('RequestStatus','Pending Substitute Approval')
                                     ->where('Substitute',auth::user()->EmployeeID)
                                     ->count();
@@ -37,4 +37,5 @@ class HomeController extends Controller
         $leaveBalance = auth::user()->LeaveBalance;
         return view('home',compact('pendingSubstituteApproval','leaveBalance','pendingHodApproval','pendingHrApproval'));
     }
+}
 }

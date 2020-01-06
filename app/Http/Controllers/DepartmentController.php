@@ -37,8 +37,9 @@ class DepartmentController extends Controller
      */
     public function create()
     {
- 
+        if (Auth::check()){
         return view('departments.create');
+        }
     }
 
     /**
@@ -87,10 +88,10 @@ class DepartmentController extends Controller
     public function edit(Department $department)
     {
         //
-    
+        if (Auth::check()){
        $departments  = Department::find($department->id);
         return view('departments.edit',['departments'=>$departments]);
-
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -101,6 +102,7 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, Department $department)
     {
+        if (Auth::check()){
         $departments=Department::where('id', $department->id)
                               ->update([
                                 'DepartmentName'=>$request->input('DepartmentName'),
@@ -116,6 +118,7 @@ if ($departments){
        // return back()->withinput();
        return back()->withinput()->with('errors','Error Updating');
     }
+}
 
     /**
      * Remove the specified resource from storage.
