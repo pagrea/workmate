@@ -77,7 +77,9 @@
         <td>{{$dependant->gender}}</td>
         <td>{{$dependant->relationship}}</td>
         <td>
+        @hasanyrole('HR|Admin')
         <a class="pull-center btn btn-primary btn-sm" href="/editdependant/{{$dependant->id}}" role="button">Edit</a>
+        @endhasanyrole 
         </td>
       </tr>
       @endforeach

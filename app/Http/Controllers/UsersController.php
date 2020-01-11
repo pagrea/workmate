@@ -298,13 +298,12 @@ public function storedependant(Request $request)
     }
 
 
-    public function editprofile(User $user)
+    public function editprofile()
     {
         //
         $User  = User::find(auth::user()->id);
-        $departments = Department::where('id','!=',0)->get();
-        $roles = Role::get();
-        return view('users.editprofile')->with('User', $User)->with('departments', $departments)->with('roles', $roles);
+        $dependants  = Dependant::where('user_id',$User->id) ->orderBy('dependant_number', 'ASC')->get();
+        return view('users.show',compact('User','dependants'));
     }
 
     public function editdependant($id)
