@@ -6,8 +6,10 @@
 <div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
       <!-- Jumbotron -->
       <a class="pull-left btn btn-primary" href="{{ url()->previous() }}" role="button">Back</a>&nbsp;&nbsp;
+      @hasanyrole('HR|Admin')
       <a class="btn btn-primary" href="/user/{{$User->id}}/edit" role="button">Edit</a>&nbsp;&nbsp;
       <a class="btn btn-primary" href="/createdependant/{{$User->id}}" role="button">Add Dependant</a>
+      @endhasanyrole 
     <a class="pull-right btn btn-primary" href="/userexportpdf/{{$User->id}}" role="button">Export to PDF</a>
       <div class="pull-center">
        <h3 align ="center">NIMR-Mbeya Medical Research center</h3>

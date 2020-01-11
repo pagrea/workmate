@@ -11,12 +11,16 @@
 <div class="row">
         @include('partials.userStatusBoxes')
    
-    @hasanyrole('Hod|CD')
+    @hasanyrole('Hod')
         @include('partials.hodStatusBoxes')
     @endhasanyrole 
 
     @hasanyrole('HR')
         @include('partials.hrStatusBoxes')
+    @endhasanyrole 
+
+    @hasanyrole('CD')
+        @include('partials.cdStatusBoxes')
     @endhasanyrole 
 </div>
 @stop

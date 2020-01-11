@@ -33,9 +33,13 @@ class HomeController extends Controller
         $pendingHrApproval = Leaverequest::where('RequestStatus','Approved As Requested')
                                     ->count();
 
-                                    
+        $pendingCDApproval = \DB::table('users')->
+                                        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                                        ->where('users.UserRole', 'Hod')
+                                        ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
+                                        ->count();
         $leaveBalance = auth::user()->LeaveBalance;
-        return view('home',compact('pendingSubstituteApproval','leaveBalance','pendingHodApproval','pendingHrApproval'));
+        return view('home',compact('pendingSubstituteApproval','leaveBalance','pendingHodApproval','pendingHrApproval','pendingCDApproval'));
     }
 }
 }
