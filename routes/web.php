@@ -41,6 +41,11 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::post('storedependant','UsersController@storedependant');
     Route::post('updatedependant','UsersController@updatedependant');
     Route::get('userexportpdf/{id}','UsersController@userexportpdf');
+    Route::get('hodlist','UsersController@hodlist')->name('user.hodlist');
+    Route::get('removehod/{id}','UsersController@removehod');
+    Route::get('addhod','UsersController@addhod');
+    Route::get('Exporthodlist','UsersController@Exporthodlist');
+    
 
     Route::get('editbulkleavebalance','UsersController@editbulkleavebalance')->name('user.editbulkleavebalance');
     Route::get('updatebulkleavebalance','UsersController@updatebulkleavebalance')->name('user.updatebulkleavebalance');
@@ -48,12 +53,17 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::resource('leaverequests', 'LeaverequestController');
     Route::get('substituteleaveapproval','LeaverequestController@substituteleaveapproval')->name('leaverequests.substituteleaveapproval');
     Route::get('hodleaveapproval','LeaverequestController@hodleaveapproval')->name('leaverequests.hodleaveapproval');
+    Route::get('hodsLeaveApprovalRequest','LeaverequestController@hodsLeaveApprovalRequest')->name('leaverequests.hodsLeaveApprovalRequest');
+    
     Route::get('hrleaveapproval','LeaverequestController@hrleaveapproval')->name('leaverequests.hrleaveapproval');
     Route::get('personalleavehistoryexport','LeaverequestController@personalleavehistoryexport');
     Route::get('Exportdepartmentalleavehistory','LeaverequestController@Exportdepartmentalleavehistory');
     Route::get('ExportAllstaffsleavehistory','LeaverequestController@ExportAllstaffsleavehistory');
     Route::get('departmentalleavehistory','LeaverequestController@departmentalleavehistory');
     Route::get('employeeleavehistory','LeaverequestController@employeeleavehistory');
+    Route::get('hodleavehistory','LeaverequestController@hodleavehistory');
+    Route::get('Exporthodleavehistory','LeaverequestController@Exporthodleavehistory');
+    
     Route::get('substituteAccept/{id}','LeaverequestController@substituteAccept');
     Route::get('substituteDecline/{id}','LeaverequestController@substituteDecline');
     Route::get('hrAccept','LeaverequestController@hrAccept');
@@ -62,6 +72,10 @@ Route::group(['middleware' => ['disablepreventback','auth']],function(){
     Route::post('hodDecline/{id}','LeaverequestController@hodDecline');
     Route::get('hodDeclinefrm/{id}','LeaverequestController@hodDeclinefrm');
     Route::get('hrDeclinefrm/{id}','LeaverequestController@hrDeclinefrm');
+    Route::get('cdDeclinefrm/{id}','LeaverequestController@cdDeclinefrm');
+    Route::post('cdDecline/{id}','LeaverequestController@cdDecline');
+    Route::get('cdAccept/{id}','LeaverequestController@cdAccept');
+    
     Route::resource('roles', 'RolesController');
     Route::get('exportpdf/{id}','LeaverequestController@exportpdf');
     Route::get('sendemail','LeaverequestController@sendemail');

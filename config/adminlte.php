@@ -223,14 +223,20 @@ return [
         'can' => 'View director Corner',
         'submenu' => [
             [
-                'text' => 'HOD Leave Approval',
-                'url'  => '#',
+                'text' => 'HODs Leave Approval',
+                'url'  => '/hodsLeaveApprovalRequest',
                 'icon' => 'pencil',
             ],
+          
             [
                 'text' => 'HODs Leave History',
-                'url'  => '#',
+                'url'  => '/hodleavehistory',
                 'icon' => 'th-list',
+            ],
+            [
+                'text' => 'HOD List',
+                'url'  => '/hodlist',
+                'icon' => 'list',
             ],
 
     ],

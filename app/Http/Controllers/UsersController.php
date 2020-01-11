@@ -5,6 +5,7 @@ use App\User;
 use App\Department;
 use App\Dependant;
 use App\Exports\StaffinfoExports;
+use App\Exports\HodlistExports;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
@@ -71,6 +72,38 @@ class UsersController extends Controller
                 \Session::put('search1', '');
             $users = User::where('Department','!=', 'Not Available') ->paginate(10);
             return view('users.index',['users'=>$users]);
+        }
+    }
+    }
+
+    public function hodlist(Request $request)
+    {
+        if (Auth::check()){
+
+            $staffNames  = User::where('Department','!=', 'Not Available')
+            ->where('UserRole', 'User')
+            ->orderBy('FirstName')
+            ->get();
+
+            $Search = $request->input('Search');
+            if ($Search !=""){
+                \Session::put('search1', $Search);
+                $users = User::where('FirstName','LIKE', '%' . $Search . '%')
+                ->where('UserRole', 'Hod')
+                ->where('Department','!=', 'Not Available')
+                
+                ->orWhere('LastName','LIKE', '%' . $Search . '%')
+                ->where('UserRole', 'Hod')
+                ->where('Department','!=', 'Not Available')
+                ->paginate(50);
+ 
+        return view('users.hodlist', compact('users','staffNames'));
+            }else{
+                \Session::put('search1', '');
+            $users = User::where('Department','!=', 'Not Available')
+            ->where('UserRole', 'Hod')
+             ->paginate(10);
+            return view('users.hodlist', compact('users','staffNames'));
         }
     }
     }
@@ -262,6 +295,16 @@ public function storedependant(Request $request)
         return view('users.edit')->with('departments', $departments)->with('User', $User)
                                  ->with('roles', $roles)->with('userRole', $userRole);
 
+    }
+
+
+    public function editprofile(User $user)
+    {
+        //
+        $User  = User::find(auth::user()->id);
+        $departments = Department::where('id','!=',0)->get();
+        $roles = Role::get();
+        return view('users.editprofile')->with('User', $User)->with('departments', $departments)->with('roles', $roles);
     }
 
     public function editdependant($id)
@@ -459,8 +502,38 @@ if ($user){
        return back()->withinput()->with('errors','Error Updating Dependant');
     }
 
+    public function removehod($id)
+    {
+        $remove=User::where('id', $id)
+                              ->update([
+                 'UserRole'=>'User',
+                 'UpdatedBy'=>auth::user()->email
+                 ]);
+    if($remove){
+        return back()->withinput()->with('success','Successfully Staff Removed in the HOD list');
+}
+       return back()->withinput()->with('errors','Error Updating Staff');
+    }
+
+    public function addhod(Request $request)
+    {
+        $validatedData = $request->validate([
+            'staff_id' => 'required|string',
+            ]);
+        $remove=User::where('id', $request->input('staff_id'))
+                              ->update([
+                 'UserRole'=>'Hod',
+                 'UpdatedBy'=>auth::user()->email
+                 ]);
+    if($remove){
+        return back()->with('success','Successfully Staff Added in the HOD list');
+}
+       return back()->withinput()->with('errors','Error Updating Staff');
+    }
 
 
+
+    
     
     /**
      * Remove the specified resource from storage.
@@ -491,6 +564,11 @@ if ($user){
     public function Exportstaffdata() 
     {
         return Excel::download(new StaffinfoExports, 'Staffinformation.xlsx');
+    }
+
+    public function Exporthodlist() 
+    {
+        return Excel::download(new HodlistExports, 'HodlistExports.xlsx');
     }
     //*********************************End Export to Excel ********************************
 

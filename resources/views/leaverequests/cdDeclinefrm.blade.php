@@ -18,7 +18,7 @@
 @endforeach
       <div class="row col-sm-12 col-md-12 col-lg-12" style="background:white; margin: 10px">
      
-      <form method="post" action="/hodDecline/{{$leaverequest->id}}">
+      <form method="post" action="/cdDecline/{{$leaverequest->id}}">
                            {{csrf_field()}}
                            
                            <div class="form-group row">
@@ -29,7 +29,7 @@
                                        type="text" 
                                        class="form-control @error('RequestStatus') is-invalid @enderror" 
                                        readonly  name="RequestStatus" 
-                                       value="Declined by HoD" 
+                                       value="Declined by Center Director" 
                                        
                                        required autocomplete="RequestStatus" 
                                        autofocus >

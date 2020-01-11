@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Exports\DepartmentalleavehistoryExports;
 use App\Exports\AllstaffsleavehistoryExports;
 use App\Exports\LeavehistoryExports;
+use App\Exports\HodleavehistoryExports;
+
 use Maatwebsite\Excel\Facades\Excel;
 use App\User;
 use Mail;
@@ -51,7 +53,7 @@ class LeaverequestController extends Controller
                 ->where('users.LastName','LIKE', '%' . $Search . '%')
 
                 ->orderBy('leaverequests.id', 'DESC')
-                ->paginate(10);
+                ->paginate(50);
         return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             }
 
@@ -73,7 +75,7 @@ class LeaverequestController extends Controller
             ->where('leaverequests.StartDate','>=', $startDate)
             ->where('leaverequests.StartDate','<=', $endDate)
             ->orderBy('leaverequests.id', 'DESC')
-            ->paginate(10);
+            ->paginate(50);
             return view('leaverequests.index',['leaverequests'=>$leaverequest]);
         }
             elseif ($Search !="" && $startDate !="" ){
@@ -93,7 +95,7 @@ class LeaverequestController extends Controller
                 ->where('leaverequests.StartDate','<=', $endDate)
                 ->where('leaverequests.TypeOfLeave','LIKE', '%' . $Search . '%')
                 ->orderBy('leaverequests.id', 'DESC')
-                ->paginate(10);
+                ->paginate(50);
                 return view('leaverequests.index',['leaverequests'=>$leaverequest]);
             
             }else{
@@ -112,6 +114,96 @@ class LeaverequestController extends Controller
     }
 
 // 
+
+
+public function hodleavehistory(Request $request)
+{
+    // 
+    if (Auth::check()){
+
+       
+        $Search = $request->input('Search');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        $staffNames = \DB::table('users')->
+        join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+        ->where('users.UserRole', 'Hod')
+        ->where('users.Department','!=', 'Not Available')
+        ->distinct()
+        ->select('leaverequests.EmployeeID','users.FirstName','users.LastName')
+        ->get();
+
+        if ($Search !="" && $startDate =="" ){
+            \Session::put('startDate1', '');
+            \Session::put('endDate1', '');
+            \Session::put('search1', $Search);
+            $leaverequests = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
+            ->where('users.UserRole', 'Hod')
+            ->where('users.Department','!=', 'Not Available')
+            ->orderBy('leaverequests.id', 'DESC')
+            ->paginate(50);
+
+    return view('leaverequests.hodleavehistory',compact('leaverequests','staffNames'));
+        }
+        elseif ($Search =="" && $startDate !="" ){
+            \Session::put('startDate1', $startDate);
+            \Session::put('endDate1', $endDate);
+            \Session::put('search1', '');
+            $validatedData = $request->validate([
+                'start_date' => 'required|date|before:end_date',
+                'end_date' => 'required|date|after:start_date',
+                ]);
+
+            $leaverequests = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->where('leaverequests.StartDate','>=', $startDate)
+            ->where('leaverequests.StartDate','<=', $endDate)
+            ->where('users.Department','!=', 'Not Available')
+            ->where('users.UserRole', 'Hod')
+            ->orderBy('leaverequests.EmployeeID', 'DESC')
+            ->paginate(50);
+            return view('leaverequests.hodleavehistory',compact('leaverequests','staffNames'));
+
+}
+ elseif ($Search !="" && $startDate !="" ){
+    \Session::put('startDate1', $startDate);
+    \Session::put('endDate1', $endDate);
+    \Session::put('search1', $Search);
+    $validatedData = $request->validate([
+        'start_date' => 'required|date|before:end_date',
+        'end_date' => 'required|date|after:start_date',
+        ]);
+
+    $leaverequests = \DB::table('users')->
+    join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+    ->where('users.UserRole', 'Hod')
+    ->where('leaverequests.StartDate','>=', $startDate)
+    ->where('leaverequests.StartDate','<=', $endDate)
+    ->where('users.EmployeeID','LIKE', '%' . $Search . '%')
+    ->where('users.Department','!=', 'Not Available')
+    ->orderBy('leaverequests.id', 'DESC')
+    ->paginate(50);
+    return view('leaverequests.hodleavehistory',compact('leaverequests','staffNames'));
+        }else{
+
+            \Session::put('startDate1', '');
+            \Session::put('endDate1', '');
+            \Session::put('search1', '');
+
+            $leaverequests = \DB::table('users')->
+            join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+            ->where('users.UserRole', 'Hod')
+            ->where('users.Department','!=', 'Not Available')
+            ->orderBy('FirstName')
+            ->paginate(10);
+            return view('leaverequests.hodleavehistory',compact('leaverequests','staffNames'));
+    }
+}
+}
+
 
     public function departmentalleavehistory(Request $request)
     {
@@ -314,6 +406,49 @@ class LeaverequestController extends Controller
     }
     }
 
+
+     /**********************************HOD Leave Approvals******************************************** */
+     public function hodsLeaveApprovalRequest(Request $request)
+     {
+         //
+         if (Auth::check()){
+ 
+             $Search = $request->input('Search');
+             if ($Search !=""){
+                 $leaverequest = \DB::table('users')->
+                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                 ->where('users.FirstName','LIKE', '%' . $Search . '%')
+                 ->where('users.UserRole', 'Hod')
+                 ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
+
+                 ->orWhere('users.LastName','LIKE', '%' . $Search . '%')
+                 ->where('users.UserRole', 'Hod')
+                 ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
+
+                 ->orWhere('users.EmployeeID','LIKE', '%' . $Search . '%')
+                 ->where('users.UserRole', 'Hod')
+                 ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
+                 ->paginate(10);
+  
+         return view('leaverequests.hodsLeaveApprovalRequest',['leaverequests'=>$leaverequest]);
+             }else{
+                 $leaverequest = \DB::table('users')->
+                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
+                 ->where('users.UserRole', 'Hod')
+                 ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
+                 ->paginate(10);
+ 
+             return view('leaverequests.hodsLeaveApprovalRequest',['leaverequests'=>$leaverequest]);
+         }
+     }
+     }
+ 
+ 
+     /**********************************HR Leave Approvals******************************************** */
+
+
+    
+
     /**********************************HOD Leave Approvals******************************************** */
     public function hodleaveapproval(Request $request)
     {
@@ -325,7 +460,7 @@ class LeaverequestController extends Controller
                 $leaverequest = \DB::table('users')->
                 join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                 ->where('leaverequests.EmployeeID','LIKE', '%' . $Search . '%')
-                ->where('leaverequests.DepartmentID', auth::user()->PayrollDepartment)
+                ->where('leaverequests.DepartmentID', auth::user()->Department)
                 ->paginate(10);
  
         return view('leaverequests.hodleaveapproval',['leaverequests'=>$leaverequest]);
@@ -374,6 +509,16 @@ class LeaverequestController extends Controller
         $leaverequest = Leaverequest::find($id);
         $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
         return view('leaverequests.hodDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
+    }
+}
+
+public function cdDeclinefrm($id)
+    {
+        //
+        if (Auth::check()){
+        $leaverequest = Leaverequest::find($id);
+        $requestname=User::where('EmployeeID',$leaverequest->EmployeeID)->get();
+        return view('leaverequests.cdDeclinefrm')->with('leaverequest', $leaverequest)->with('requestname', $requestname);
     }
 }
 
@@ -611,7 +756,61 @@ return back()->withinput()->with('errors','Error Updating');
 }
  }
 
-/*******************************HOD Approval Decline************************************ */
+
+
+
+ public function cdAccept($id)
+ {
+     //
+     if (Auth::check()){
+     $Leaverequests=Leaverequest::where('id',$id)->update([
+                 'RequestStatus'=>'Approved As Requested',
+                 'UpdatedBy'=>auth::user()->email
+              ]);
+
+if ($Leaverequests){
+    $hrEmails = User::role('HR')->pluck('email');
+
+    //Send Email to HR
+    Notification::route('mail', $hrEmails)
+      ->notify(new HRLeaveApprovalRequestReceived());
+      
+return redirect()->route('leaverequests.hodsLeaveApprovalRequest')->with('success','You have approved the leave as Center Director and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+ }
+/*******************************CD Approval Decline************************************ */
+
+public function cdDecline(Request $request, $id)
+ {
+     //
+     if (Auth::check()){
+     $validatedData = $request->validate([
+        'decline_reason' => 'required|string|max:500',
+        ]);
+
+     $Leaverequests=Leaverequest::where('id',$id)->update([
+                 'decline_reason'=>$request->input('decline_reason'),
+                 'RequestStatus'=>$request->input('RequestStatus'),
+                 'UpdatedBy'=>auth::user()->email
+              ]);
+
+if ($Leaverequests){
+    $updatedLeaveRequest = Leaverequest::findOrFail($id);
+    $applicant = User::where('EmployeeID', 'LIKE', $updatedLeaveRequest->EmployeeID)->first();
+    $applicantEmail = $applicant->email;
+    $applicantName = $applicant->FirstName . ' ' . $applicant->LastName;
+
+    //Send Email to the applicant to alert HOD Decline
+    Notification::route('mail', $applicantEmail)
+     ->notify(new LeaveApprovalRequestDeniedByHOD($applicantName));
+
+return redirect()->route('leaverequests.hodsLeaveApprovalRequest')->with('success','You have Declined the leave as Center Director and Record Saved successiful!');
+}
+return back()->withinput()->with('errors','Error Updating');
+}
+ }
 
 public function hodDecline(Request $request, $id)
  {
@@ -623,7 +822,7 @@ public function hodDecline(Request $request, $id)
 
      $Leaverequests=Leaverequest::where('id',$id)->update([
                  'decline_reason'=>$request->input('decline_reason'),
-                 'RequestStatus'=>'Declined by HoD',
+                 'RequestStatus'=>$request->input('RequestStatus'),
                  'UpdatedBy'=>auth::user()->email
               ]);
 
@@ -736,7 +935,14 @@ public function sendemail()
         return Excel::download(new AllstaffsleavehistoryExports, 'AllstaffsleavehistoryExports.xlsx');
     }
 
+    public function Exporthodleavehistory() 
+    {
+        return Excel::download(new HodleavehistoryExports, 'HodleavehistoryExports.xlsx');
+    }
 
+
+
+    
     //********************************* Export to PDF********************************
     public function exportpdf($id)
 {
