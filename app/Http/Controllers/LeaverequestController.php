@@ -419,14 +419,17 @@ public function hodleavehistory(Request $request)
                  join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                  ->where('users.FirstName','LIKE', '%' . $Search . '%')
                  ->where('users.UserRole', 'Hod')
+                 ->where('users.Department','!=', 'Not Available')
                  ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
 
                  ->orWhere('users.LastName','LIKE', '%' . $Search . '%')
                  ->where('users.UserRole', 'Hod')
+                 ->where('users.Department','!=', 'Not Available')
                  ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
 
                  ->orWhere('users.EmployeeID','LIKE', '%' . $Search . '%')
                  ->where('users.UserRole', 'Hod')
+                 ->where('users.Department','!=', 'Not Available')
                  ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
                  ->paginate(10);
   
@@ -435,6 +438,7 @@ public function hodleavehistory(Request $request)
                  $leaverequest = \DB::table('users')->
                  join('leaverequests' , 'leaverequests.EmployeeID' , '=','users.EmployeeID')
                  ->where('users.UserRole', 'Hod')
+                 ->where('users.Department','!=', 'Not Available')
                  ->where('leaverequests.RequestStatus', 'Accepted by the substitute')
                  ->paginate(10);
  
