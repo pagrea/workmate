@@ -19,7 +19,7 @@
                                 <input id="EmployeeID" 
                                        type="text" 
                                        class="form-control @error('EmployeeID') is-invalid @enderror" 
-                                       name="EmployeeID" 
+                                       readonly name="EmployeeID" 
                                        value="{{$User->EmployeeID}}" 
                                        required autocomplete="EmployeeID" 
                                        autofocus >
