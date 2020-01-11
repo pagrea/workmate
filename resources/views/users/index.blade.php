@@ -4,7 +4,7 @@
 @include('partials.errors')
 @include('partials.success')
 
-<div class="col-md-9 col-lg-12 col-sm-12 pull-left" style="background: white;">
+<div class="col-md-12 col-lg-12 col-sm-12 pull-left" style="background: white;">
   <div class="panel-body">
   <form action="/user" method="get">
   <a class="pull-left btn btn-primary " href="/user/create">Register New Staff</a><br>
@@ -46,7 +46,7 @@
         <td>{{$user->Department}}</td>
         <td>{{$user->email}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}" role="button">View More</a>
+        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}" role="button">View more</a>
         <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}/edit" role="button">Edit</a>
        
         </td>

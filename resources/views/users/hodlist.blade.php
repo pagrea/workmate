@@ -60,7 +60,7 @@
         <td>{{$user->Department}}</td>
         <td>{{$user->UserRole}}</td>
         <td>
-        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}" role="button">View More</a>
+        <a class="pull-center btn btn-primary btn-sm" href="/user/{{$user->id}}" role="button">View</a>
         <a onclick='return confirm("Are you sure You want to remove this staff in the list of HOD?? Click Ok to continue or Click Cancel to Cancel")' class="pull-center btn btn-primary btn-sm" href="/removehod/{{$user->id}}" role="button">Remove</a>
        
         </td>
