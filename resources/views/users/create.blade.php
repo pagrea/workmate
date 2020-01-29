@@ -87,7 +87,7 @@
                             <label for="Gender" class="col-md-2 col-form-label text-md-right">Gender<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="Gender" required name="Gender" class="form-control @error('Gender') is-invalid @enderror"/>
-                            <option value="{{ old('Gender') }}" disabled selected>{{ old('Gender') }}</option>
+                            <option value="{{ old('Gender') }}" >{{ old('Gender') }}</option>
                                        <option value="Male">Male</option>
                                        <option value="Female">Female</option>
                                        </select>
@@ -122,12 +122,13 @@
                             <label for="highest_education_level" class="col-md-2 col-form-label text-md-right">Highest Education Level<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="highest_education_level" required name="highest_education_level" class="form-control @error('highest_education_level') is-invalid @enderror"/>
-                            <option value="{{ old('highest_education_level') }}" disabled selected>{{ old('highest_education_level') }}</option>
+                            <option value="{{ old('highest_education_level') }}">{{ old('highest_education_level') }}</option>
                                        <option value="Doctor of Philosophy(PhD)">Doctor of Philosophy(PhD)</option>
                                        <option value="Masters">Masters</option>
                                        <option value="Postgraduate Diploma">Postgraduate Diploma</option>
                                        <option value="Bachelor">Bachelor</option>
                                        <option value="Diploma">Advanced Diploma</option>
+                                       <option value="CPA">CPA</option>
                                        <option value="Diploma">Diploma</option>
                                        <option value="Certificate">Certificate</option>
                                        <option value="Certificate of Secondary Education">Advanced Certificate of Secondary Education</option>
@@ -183,7 +184,7 @@
                             <label for="MaritalStatus" class="col-md-2 col-form-label text-md-right">Marital Status<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="MaritalStatus" required name="MaritalStatus" class="form-control @error('MaritalStatus') is-invalid @enderror"/>
-                            <option value="{{ old('MaritalStatus') }}" disabled selected>{{ old('MaritalStatus') }}</option>
+                            <option value="{{ old('MaritalStatus') }}" >{{ old('MaritalStatus') }}</option>
                                        <option value="Married">Married</option>
                                        <option value="Single">Single</option>
                                        <option value="Divoced">Divoced</option>
@@ -273,7 +274,7 @@
                             <label for="CurrentStatus" class="col-md-2 col-form-label text-md-right">Current Status<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="CurrentStatus" required name="CurrentStatus" class="form-control @error('CurrentStatus') is-invalid @enderror"/>
-                                  <option value="{{ old('CurrentStatus') }}" disabled selected>{{ old('CurrentStatus') }}</option>
+                                  <option value="{{ old('CurrentStatus') }}">{{ old('CurrentStatus') }}</option>
                                   <option value="Present">Present</option>
                                   <option value="On paid Leave">On paid Leave</option>
                                   <option value="On paid Leave">On unpaid Leave</option>
@@ -293,9 +294,9 @@
                             <label for="Department" class="col-md-2 col-form-label text-md-right">Department<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="Department" required name="Department" class="form-control @error('Department') is-invalid @enderror"/>
-                                  <option value="{{ old('Department') }}" disabled selected>{{ old('Department') }}</option>
+                                  <option value="{{ old('Department') }}">{{ old('Department') }}</option>
                                   @foreach($departments as $department)
-                                       <option value="{{$department->Department}}">{{$department->DepartmentName}}</option>
+                                       <option value="{{$department->DepartmentName}}">{{$department->DepartmentName}}</option>
                                     @endforeach
                              </select>
                                        @error('Department')
@@ -310,7 +311,7 @@
                             <label for="AbsorbedInNIMR" class="col-md-2 col-form-label text-md-right">Absorbed In NIMR<span class="required"><font color="red">*</font></span></label>
                             <div class="col-md-6">
                             <select id="AbsorbedInNIMR" required name="AbsorbedInNIMR" class="form-control @error('AbsorbedInNIMR') is-invalid @enderror"/>
-                                  <option value="{{ old('AbsorbedInNIMR') }}" disabled selected>{{ old('AbsorbedInNIMR') }}</option>
+                                  <option value="{{ old('AbsorbedInNIMR') }}">{{ old('AbsorbedInNIMR') }}</option>
                                   <option value="Yes">Yes</option>
                                   <option value="No">No</option>
                              </select>

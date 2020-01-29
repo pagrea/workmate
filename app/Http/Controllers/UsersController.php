@@ -168,7 +168,7 @@ class UsersController extends Controller
     {
 
          if (Auth::check()){
-
+//
             $validatedData = $request->validate([
                 'EmployeeID' => 'required|string',
                 'FirstName' => 'required|string',

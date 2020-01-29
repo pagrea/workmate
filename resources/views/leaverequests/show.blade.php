@@ -21,7 +21,6 @@
   <tr><td>Name</td><td>{{$requestnames->FirstName}} {{$requestnames->LastName}}</td></tr>
   @endforeach
   <tr><td>Department Name</td><td>{{$leaverequests->DepartmentID}}</td></tr>
- 
   <tr><td>Request Date</td><td>{{$leaverequests->RequestDate}}</td></tr>
   <tr><td>Start Date</td><td>{{$leaverequests->StartDate}}</td></tr>
   <tr><td>Days Requested</td><td>{{$leaverequests->DaysRequested}}</td></tr>
@@ -32,6 +31,21 @@
   @endforeach
   <tr><td>Contact Telephone Number</td><td>{{$leaverequests->ContactTelephone}}</td></tr>
   <tr><td>Request Status</td><td>{{$leaverequests->RequestStatus}}</td></tr>
+
+  <tr><td>Substitute Approval Status</td><td>  @if($leaverequests->substitute_approval != "Pending")   
+                                         <span style="background-color:lightgreen; font-weight: bold;">
+                                       @endif
+                                          {{$leaverequests->substitute_approval}}</span></td></tr>
+  <tr><td>Department Approval Status</td><td>  @if($leaverequests->departmental_approval != "Pending")   
+                                         <span style="background-color:lightgreen; font-weight: bold;">
+                                         @endif
+                                          {{$leaverequests->departmental_approval}}</span></td></tr>
+
+  <tr><td>HR Approval Status</td><td> @if($leaverequests->hr_approval != "Pending")   
+                                         <span style="background-color:lightgreen; font-weight: bold;">
+                                         @endif
+                                           {{$leaverequests->hr_approval}}</span></td></tr>
+
   <tr><td>Days Approved</td><td>{{$leaverequests->DaysApproved}}</td></tr>
   <tr><td>Decline Reason</td><td>{{$leaverequests->decline_reason}}</td></tr>
   <tr><td>Updated By</td><td>{{$leaverequests->UpdatedBy}}</td></tr>
