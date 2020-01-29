@@ -341,6 +341,25 @@
                             </div>
                         </div>
 
+                        
+                        <div class="form-group row">
+                            <label for="username" class="col-md-2 col-form-label text-md-right">User Name</label>
+                            <div class="col-md-6">
+                                <input id="username" 
+                                       type="text" 
+                                       class="form-control @error('username') is-invalid @enderror" 
+                                       name="username" 
+                                       value="{{ old('username') }}" 
+                                       autocomplete="username" 
+                                       autofocus >
+                                @error('username')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="form-group row">
                             <label for="OtherEmail" class="col-md-2 col-form-label text-md-right">Other E-mail Address</label>
                             <div class="col-md-6">

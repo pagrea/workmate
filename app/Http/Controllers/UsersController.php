@@ -172,6 +172,7 @@ class UsersController extends Controller
             $validatedData = $request->validate([
                 'EmployeeID' => 'required|string',
                 'FirstName' => 'required|string',
+                'username' => 'required|string',
                 'LastName' => 'required|string',
                 'Dob' => 'required|date',
                 'Gender' => 'required|string',
@@ -198,6 +199,7 @@ class UsersController extends Controller
                      'EmployeeID'=>$request->input('EmployeeID'),
                      'FirstName'=>$request->input('FirstName'),
                      'LastName'=>$request->input('LastName'),
+                     'username'=>$request->input('username'),
                      'Dob'=>$request->input('Dob'),
                      'Gender'=>$request->input('Gender'),
                      'JobTitle'=>$request->input('JobTitle'),
