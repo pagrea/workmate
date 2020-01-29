@@ -212,7 +212,7 @@ class UsersController extends Controller
                      'NationalIDNum'=>$request->input('NationalIDNum'),
                      'BirthCertificateNum'=>$request->input('BirthCertificateNum'),
                      'CurrentStatus'=>$request->input('CurrentStatus'),
-                     'PayrollDepartment'=>$request->input('PayrollDepartment'),
+                     'Department'=>$request->input('Department'),
                      'AbsorbedInNIMR'=>$request->input('AbsorbedInNIMR'),
                      'email'=>$request->input('email'),
                      'OtherEmail'=>$request->input('OtherEmail'),

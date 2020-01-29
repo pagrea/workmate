@@ -131,6 +131,7 @@
                                        <option value="Postgraduate Diploma">Postgraduate Diploma</option>
                                        <option value="Bachelor">Bachelor</option>
                                        <option value="Diploma">Advanced Diploma</option>
+                                       <option value="CPA">CPA</option>
                                        <option value="Diploma">Diploma</option>
                                        <option value="Certificate">Certificate</option>
                                        <option value="Certificate of Secondary Education">Advanced Certificate of Secondary Education</option>
